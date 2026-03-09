@@ -1,0 +1,77 @@
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18rpx;
+  margin-top: 18rpx;
+}
+
+.preset-card {
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 252, 247, 0.88);
+  border: 1rpx solid rgba(191, 93, 50, 0.14);
+}
+
+.preset-card-active {
+  background: linear-gradient(145deg, rgba(191, 93, 50, 0.14) 0%, rgba(255, 248, 241, 0.98) 100%);
+  border-color: rgba(191, 93, 50, 0.36);
+  box-shadow: 0 12rpx 28rpx rgba(191, 93, 50, 0.12);
+}
+
+.preset-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #463528;
+  line-height: 1.4;
+}
+
+.preset-body {
+  margin-top: 10rpx;
+  font-size: 23rpx;
+  color: #786b59;
+  line-height: 1.55;
+}
+
+.picker-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 88rpx;
+  padding: 0 24rpx;
+  border-radius: 22rpx;
+  background: #fffdf8;
+  border: 1rpx solid rgba(153, 127, 94, 0.24);
+  box-sizing: border-box;
+}
+
+.picker-value {
+  color: #34281f;
+  font-size: 28rpx;
+}
+
+.picker-arrow {
+  color: #a17d5d;
+  font-size: 24rpx;
+}
+
+.action-btn-disabled {
+  opacity: 0.45;
+}
+
+.plan-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.plan-hint {
+  margin-top: 16rpx;
+  font-size: 23rpx;
+  color: #887967;
+  line-height: 1.6;
+}
+
+.tappable-card {
+  border-style: dashed;
+}

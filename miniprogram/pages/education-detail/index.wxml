@@ -1,0 +1,26 @@
+<view class="page-shell" wx:if="{{item}}">
+  <view class="hero-card">
+    <view class="tag-row">
+      <view class="tag">{{item.mediaTypeLabel}}</view>
+      <view class="tag tag-soft">{{item.stageLabel}}</view>
+      <view class="tag tag-soft">{{item.durationLabel}}</view>
+    </view>
+    <view class="panel-title" style="margin-top: 18rpx;">{{item.title}}</view>
+    <view class="list-body">{{item.summary}}</view>
+    <button class="ghost-btn" bindtap="toggleFavorite" style="margin-top: 18rpx;">
+      {{item.isFavorite ? '取消收藏' : '收藏内容'}}
+    </button>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">正文内容</view>
+    <view class="list-body">{{item.content}}</view>
+  </view>
+
+  <view class="panel" wx:if="{{item.keyPoints && item.keyPoints.length}}">
+    <view class="panel-title">重点提示</view>
+    <view class="tag-row" style="margin-top: 18rpx;">
+      <view wx:for="{{item.keyPoints}}" wx:key="index" class="tag">{{item}}</view>
+    </view>
+  </view>
+</view>

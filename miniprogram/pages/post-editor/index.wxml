@@ -1,0 +1,23 @@
+<view class="page-shell" id="page-post-editor">
+  <view class="hero-card">
+    <view class="panel-title">{{postId ? '编辑经验分享' : '发布经验分享'}}</view>
+    <view class="panel-subtitle">内容会进入审核流，系统会过滤违规或不实信息。</view>
+  </view>
+
+  <view class="panel">
+    <view class="field-group">
+      <text class="field-label">标题</text>
+      <input id="input-post-title" class="input" value="{{form.title}}" data-key="title" bindinput="onFieldChange" />
+    </view>
+    <view class="field-group">
+      <text class="field-label">正文</text>
+      <textarea id="input-post-content" class="textarea" auto-height="true" value="{{form.content}}" data-key="content" bindinput="onFieldChange"></textarea>
+    </view>
+    <view class="field-group">
+      <text class="field-label">标签</text>
+      <input class="input" value="{{form.tags}}" data-key="tags" bindinput="onFieldChange" />
+      <view class="field-hint">用英文逗号分隔，例如：化疗,饮食,疲乏管理</view>
+    </view>
+    <button id="button-submit-post" class="action-btn" bindtap="savePost">提交审核</button>
+  </view>
+</view>

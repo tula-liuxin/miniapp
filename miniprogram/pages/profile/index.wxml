@@ -1,0 +1,67 @@
+<view class="page-shell" id="page-profile">
+  <view wx:if="{{profile}}" class="hero-card">
+    <view class="panel-title">{{profile.name}}</view>
+    <view class="panel-subtitle">{{profile.diagnosis}} · {{profile.treatmentStageLabel}}</view>
+    <view class="list-body">{{profile.treatmentPlan}}</view>
+  </view>
+
+  <view wx:if="{{summary}}" class="grid-two">
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.symptomCount}}</view>
+      <view class="stat-label">症状评估</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.checkinCount}}</view>
+      <view class="stat-label">打卡记录</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.consultationCount}}</view>
+      <view class="stat-label">咨询记录</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.favoriteCount}}</view>
+      <view class="stat-label">学习收藏</view>
+    </view>
+  </view>
+
+  <view wx:if="{{profile}}" class="panel">
+    <view class="panel-title">个人档案</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view class="timeline-card">
+        <view class="timeline-title">复查计划</view>
+        <view class="timeline-body">{{profile.followUpPlan}}</view>
+      </view>
+      <view class="timeline-card">
+        <view class="timeline-title">负责团队</view>
+        <view class="timeline-body">{{profile.careTeam}}</view>
+      </view>
+      <view class="timeline-card">
+        <view class="timeline-title">紧急联系人</view>
+        <view class="timeline-body">{{profile.emergencyContact}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">快捷入口</view>
+    <view class="quick-grid" style="margin-top: 18rpx;">
+      <view class="quick-item" bindtap="openPage" data-url="/pages/records/index">
+        <view class="quick-title">健康档案</view>
+        <view class="quick-desc">查看症状、打卡、咨询和学习轨迹。</view>
+      </view>
+      <view class="quick-item" bindtap="openPage" data-url="/pages/reminders/index">
+        <view class="quick-title">提醒设置</view>
+        <view class="quick-desc">管理服药、复查、自评和课程提醒。</view>
+      </view>
+      <view class="quick-item" bindtap="openPage" data-url="/pages/help/index">
+        <view class="quick-title">使用说明</view>
+        <view class="quick-desc">查看教程、反馈入口和热线说明。</view>
+      </view>
+      <view id="button-export-records" class="quick-item" bindtap="exportRecords">
+        <view class="quick-title">导出记录</view>
+        <view class="quick-desc">生成健康档案导出任务。</view>
+      </view>
+    </view>
+    <button id="button-emergency-help" class="danger-btn" bindtap="triggerEmergency" style="margin-top: 18rpx;">一键紧急求助</button>
+  </view>
+</view>

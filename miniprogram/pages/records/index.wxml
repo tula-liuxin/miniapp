@@ -1,0 +1,65 @@
+<view class="page-shell">
+  <view class="hero-card" wx:if="{{summary}}">
+    <view class="panel-title">个人健康档案</view>
+    <view class="panel-subtitle">整合症状自评、健康打卡、咨询记录与教育学习轨迹。</view>
+  </view>
+
+  <view class="grid-two" wx:if="{{summary}}">
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.symptomCount}}</view>
+      <view class="stat-label">症状评估</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.checkinCount}}</view>
+      <view class="stat-label">打卡记录</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.consultationCount}}</view>
+      <view class="stat-label">咨询记录</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.metrics.favoriteCount}}</view>
+      <view class="stat-label">学习收藏</view>
+    </view>
+  </view>
+
+  <view class="panel" wx:if="{{summary && summary.recentAssessments}}">
+    <view class="panel-title">最近症状自评</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{summary.recentAssessments}}" wx:key="id" class="timeline-card">
+        <view class="timeline-time">{{item.createdAtLabel}}</view>
+        <view class="timeline-title">{{item.title}}</view>
+        <view class="timeline-body">{{item.body}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel" wx:if="{{summary && summary.recentCheckins}}">
+    <view class="panel-title">最近健康打卡</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{summary.recentCheckins}}" wx:key="id" class="timeline-card">
+        <view class="timeline-time">{{item.createdAtLabel}}</view>
+        <view class="timeline-title">{{item.title}}</view>
+        <view class="timeline-body">{{item.body}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel" wx:if="{{summary && summary.recentConsultations}}">
+    <view class="panel-title">最近咨询记录</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{summary.recentConsultations}}" wx:key="id" class="timeline-card">
+        <view class="timeline-time">{{item.createdAtLabel}}</view>
+        <view class="timeline-title">{{item.title}}</view>
+        <view class="timeline-body">{{item.body}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel" wx:if="{{summary && summary.learningRecords}}">
+    <view class="panel-title">教育学习记录</view>
+    <view class="tag-row" style="margin-top: 18rpx;">
+      <view wx:for="{{summary.learningRecords}}" wx:key="index" class="tag">{{item}}</view>
+    </view>
+  </view>
+</view>

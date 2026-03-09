@@ -1,0 +1,53 @@
+<view class="page-shell" id="page-checkin">
+  <view class="hero-card">
+    <view class="panel-title">每日健康打卡</view>
+    <view class="panel-subtitle">记录生命体征、饮食运动、服药情况和情绪状态，系统会自动纳入周复盘。</view>
+  </view>
+
+  <view class="panel">
+    <view class="grid-two">
+      <view class="field-group">
+        <text class="field-label">体温</text>
+        <input id="input-temperature" class="input" value="{{form.temperature}}" data-key="temperature" bindinput="onFieldChange" />
+      </view>
+      <view class="field-group">
+        <text class="field-label">血压</text>
+        <input class="input" value="{{form.bloodPressure}}" data-key="bloodPressure" bindinput="onFieldChange" />
+      </view>
+      <view class="field-group">
+        <text class="field-label">体重</text>
+        <input id="input-weight" class="input" value="{{form.weight}}" data-key="weight" bindinput="onFieldChange" />
+      </view>
+      <view class="field-group">
+        <text class="field-label">运动时长</text>
+        <input id="input-exercise-minutes" class="input" value="{{form.exerciseMinutes}}" data-key="exerciseMinutes" bindinput="onFieldChange" />
+      </view>
+    </view>
+    <view class="field-group">
+      <text class="field-label">症状变化</text>
+      <textarea class="textarea" auto-height="true" value="{{form.symptomChange}}" data-key="symptomChange" bindinput="onFieldChange" placeholder="今天最明显的症状变化是什么？"></textarea>
+    </view>
+    <view class="field-group">
+      <text class="field-label">饮食情况</text>
+      <textarea class="textarea" auto-height="true" value="{{form.diet}}" data-key="diet" bindinput="onFieldChange" placeholder="例如：清淡饮食、少量多餐"></textarea>
+    </view>
+    <view class="field-group">
+      <text class="field-label">服药情况</text>
+      <input class="input" value="{{form.medication}}" data-key="medication" bindinput="onFieldChange" />
+    </view>
+    <view class="field-group">
+      <text class="field-label">情绪状态</text>
+      <input class="input" value="{{form.mood}}" data-key="mood" bindinput="onFieldChange" />
+    </view>
+    <button id="button-submit-checkin" class="action-btn" bindtap="submitCheckin">保存今日打卡</button>
+  </view>
+
+  <view class="panel" wx:if="{{latestCheckin}}">
+    <view class="panel-title">最近一次打卡摘要</view>
+    <view class="list-body">
+      体温 {{latestCheckin.temperature}}，血压 {{latestCheckin.bloodPressure}}，体重 {{latestCheckin.weight}}，运动 {{latestCheckin.exerciseMinutes}} 分钟。
+    </view>
+    <view class="list-body">{{latestCheckin.symptomChange}}</view>
+    <button class="secondary-btn" bindtap="openWeeklyReport" style="margin-top: 18rpx;">查看周复盘</button>
+  </view>
+</view>

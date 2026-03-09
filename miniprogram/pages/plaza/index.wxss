@@ -1,0 +1,25 @@
+.post-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.post-tags-row {
+  flex: 1;
+}
+
+.ghost-btn-active {
+  color: #fff8f0;
+  background: linear-gradient(135deg, #bf6a3a 0%, #dfa16d 100%);
+  border-color: transparent;
+}
+
+.empty-inline {
+  margin-top: 18rpx;
+  padding: 20rpx 22rpx;
+  border-radius: 20rpx;
+  background: rgba(240, 231, 219, 0.45);
+  color: #7b6d5c;
+  font-size: 24rpx;
+  line-height: 1.6;
+}

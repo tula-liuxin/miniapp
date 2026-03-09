@@ -1,0 +1,99 @@
+<view class="page-shell" id="page-home">
+  <view class="hero-card" id="home-hero">
+    <view class="panel-title">{{summary.greeting}}</view>
+    <view class="panel-subtitle">{{summary.patientName}} · {{summary.treatmentStageLabel}}</view>
+    <view class="tag-row" style="margin-top: 18rpx;">
+      <view class="tag">下次复查 {{summary.nextFollowUpDate}}</view>
+      <view class="tag tag-soft">活跃预警 {{summary.activeAlerts}} 条</view>
+    </view>
+  </view>
+
+  <view class="grid-two">
+    <view class="stat-card">
+      <view class="stat-value">{{summary.symptomDistressIndex}}</view>
+      <view class="stat-label">症状困扰指数</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-value">{{summary.learningProgress}}%</view>
+      <view class="stat-label">学习进度</view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">今日快速入口</view>
+    <view class="quick-grid" style="margin-top: 18rpx;">
+      <view class="quick-item" data-url="/pages/checkin/index" bindtap="openPage">
+        <view class="quick-title">每日健康打卡</view>
+        <view class="quick-desc">记录生命体征、饮食、运动和情绪状态。</view>
+      </view>
+      <view class="quick-item" data-url="/pages/action-plan/index" bindtap="openPage">
+        <view class="quick-title">症状行动计划</view>
+        <view class="quick-desc">把应对步骤写成提醒，督促自己执行。</view>
+      </view>
+      <view class="quick-item" data-url="/pages/records/index" bindtap="openPage">
+        <view class="quick-title">健康记录汇总</view>
+        <view class="quick-desc">查看症状、咨询、教育学习的整合档案。</view>
+      </view>
+      <view class="quick-item" data-url="/pages/reminders/index" bindtap="openPage">
+        <view class="quick-title">提醒设置</view>
+        <view class="quick-desc">服药、复查、自评和课程提醒统一管理。</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">阶段化知识教育</view>
+    <view class="panel-subtitle">根据患者当前治疗阶段动态调整内容重点。</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{educationFeed}}" wx:key="id" class="list-card">
+        <view class="tag-row">
+          <view class="tag">{{item.mediaTypeLabel}}</view>
+          <view class="tag tag-soft">{{item.stageLabel}}</view>
+          <view class="tag tag-soft">{{item.durationLabel}}</view>
+        </view>
+        <view class="list-title">{{item.title}}</view>
+        <view class="list-body">{{item.summary}}</view>
+        <view class="list-actions">
+          <button class="ghost-btn" data-id="{{item.id}}" bindtap="toggleFavorite">
+            {{item.isFavorite ? '取消收藏' : '收藏内容'}}
+          </button>
+          <button class="secondary-btn" data-id="{{item.id}}" bindtap="openDetail">查看详情</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">个性化教育中心</view>
+    <view class="panel-subtitle">行动计划、正念课程和沟通支持集中展示。</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{actionPlanHighlights}}" wx:key="id" class="list-card">
+        <view class="tag">行动计划</view>
+        <view class="list-title">{{item.trigger}}</view>
+        <view class="list-body">建议动作：{{item.response}}</view>
+      </view>
+      <view wx:for="{{mindfulnessCourses}}" wx:key="id" class="list-card">
+        <view class="tag tag-soft">{{item.durationLabel}}</view>
+        <view class="list-title">{{item.title}}</view>
+        <view class="list-body">{{item.summary}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">智能预警与优质经验</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{alerts}}" wx:key="id" class="timeline-card">
+        <view class="tag tag-danger">{{item.levelLabel}}</view>
+        <view class="timeline-title">{{item.title}}</view>
+        <view class="timeline-body">{{item.message}}</view>
+        <view class="timeline-time">{{item.createdAtLabel}}</view>
+      </view>
+      <view wx:for="{{recommendedPosts}}" wx:key="id" class="list-card">
+        <view class="tag">广场推荐</view>
+        <view class="list-title">{{item.title}}</view>
+        <view class="list-body">{{item.excerpt}}</view>
+      </view>
+    </view>
+  </view>
+</view>

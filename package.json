@@ -1,0 +1,33 @@
+{
+  "name": "cervical-care-miniprogram",
+  "version": "1.0.0",
+  "private": true,
+  "description": "宫颈癌患者自我管理原生微信小程序与验证工具链",
+  "scripts": {
+    "configure:miniapp": "node scripts/configure-miniapp.mjs",
+    "configure:local-wifi": "node scripts/configure-local-wifi.mjs",
+    "start:server": "tsx mock-server/src/index.ts",
+    "start:local-phone": "powershell -ExecutionPolicy Bypass -File scripts/start-local-phone.ps1",
+    "allow:port3100": "powershell -ExecutionPolicy Bypass -File scripts/allow-port-3100.ps1",
+    "dev:server": "tsx watch mock-server/src/index.ts",
+    "smoke:playwright": "playwright test tests/playwright",
+    "smoke:miniprogram": "node tests/miniprogram/smoke.mjs",
+    "smoke:miniprogram:check": "node tests/miniprogram/check-devtools.mjs",
+    "smoke": "node scripts/run-smoke.mjs",
+    "install:devtools": "powershell -ExecutionPolicy Bypass -File scripts/install-devtools.ps1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "miniprogram-automator": "^0.12.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.3"
+  }
+}

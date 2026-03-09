@@ -1,0 +1,27 @@
+<view class="page-shell">
+  <view class="hero-card">
+    <view class="panel-title">使用说明与反馈</view>
+    <view class="panel-subtitle">帮助患者快速理解模块用途、操作方式和应急路径。</view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">使用指南</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{guideSections}}" wx:key="id" class="timeline-card">
+        <view class="timeline-title">{{item.title}}</view>
+        <view class="timeline-body">{{item.body}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">专科热线</view>
+    <view class="list-body">{{hotline}}</view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">意见反馈</view>
+    <textarea class="textarea" auto-height="true" placeholder="告诉我们你希望优化或新增的功能" value="{{feedback}}" bindinput="onFeedbackChange"></textarea>
+    <button class="action-btn" bindtap="submitFeedback" style="margin-top: 18rpx;">提交反馈</button>
+  </view>
+</view>

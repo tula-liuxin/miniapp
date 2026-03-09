@@ -1,0 +1,96 @@
+<view class="page-shell" id="page-plaza">
+  <view class="hero-card">
+    <view class="panel-title">健康广场</view>
+    <view class="panel-subtitle">这里更像互助社区，而不是数据演示页。你可以分享经验，也能收到真实的互动反馈。</view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">首页推荐</view>
+    <view class="panel-subtitle">高互动、高收藏的内容会优先展示。</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{recommendedPosts}}" wx:key="id" class="list-card">
+        <view class="list-title">{{item.title}}</view>
+        <view class="list-body">{{item.excerpt}}</view>
+      </view>
+    </view>
+    <button id="button-open-post-editor" class="action-btn" bindtap="openComposer" style="margin-top: 18rpx;">发布经验分享</button>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">最新经验分享</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{posts}}" wx:key="id" class="list-card">
+        <view class="post-meta-row">
+          <view class="tag-row post-tags-row">
+            <view class="tag">{{item.authorName}}</view>
+            <view class="tag {{item.status === 'approved' ? 'tag-soft' : 'tag-danger'}}">{{item.statusLabel}}</view>
+            <view class="tag tag-soft">{{item.createdAtLabel}}</view>
+          </view>
+        </view>
+
+        <view class="list-title">{{item.title}}</view>
+        <view class="list-body">{{item.content}}</view>
+
+        <view class="tag-row" style="margin-top: 18rpx;">
+          <view wx:for="{{item.tags}}" wx:key="index" class="tag">{{item}}</view>
+        </view>
+
+        <view class="list-actions">
+          <button
+            class="ghost-btn {{item.likedByMe ? 'ghost-btn-active' : ''}}"
+            bindtap="likePost"
+            data-id="{{item.id}}"
+            disabled="{{busyActions['like-' + item.id]}}"
+          >
+            {{item.likedByMe ? '已点赞' : '点赞'}} {{item.likes}}
+          </button>
+          <button
+            class="ghost-btn {{item.favoritedByMe ? 'ghost-btn-active' : ''}}"
+            bindtap="favoritePost"
+            data-id="{{item.id}}"
+            disabled="{{busyActions['favorite-' + item.id]}}"
+          >
+            {{item.favoritedByMe ? '已收藏' : '收藏'}} {{item.favorites}}
+          </button>
+        </view>
+
+        <view class="list-actions" wx:if="{{item.isOwner}}">
+          <button class="secondary-btn" bindtap="editPost" data-id="{{item.id}}">编辑</button>
+          <button class="danger-btn" bindtap="deletePost" data-id="{{item.id}}" disabled="{{busyActions['delete-' + item.id]}}">删除</button>
+        </view>
+
+        <view class="field-group">
+          <text class="field-label">评论交流</text>
+          <input
+            class="input"
+            placeholder="写下你的鼓励或追问"
+            value="{{commentDrafts[item.id]}}"
+            data-id="{{item.id}}"
+            bindinput="onCommentInput"
+          />
+          <button
+            class="secondary-btn"
+            bindtap="submitComment"
+            data-id="{{item.id}}"
+            style="margin-top: 14rpx;"
+            disabled="{{busyActions['comment-' + item.id]}}"
+          >
+            发表评论
+          </button>
+        </view>
+
+        <view class="card-list" style="margin-top: 18rpx;" wx:if="{{item.comments.length}}">
+          <view wx:for="{{item.comments}}" wx:key="id" class="timeline-card">
+            <view class="timeline-time">{{item.createdAtLabel}}</view>
+            <view class="timeline-title">{{item.authorName}}</view>
+            <view class="timeline-body">{{item.content}}</view>
+          </view>
+        </view>
+
+        <view wx:if="{{!item.comments.length}}" class="empty-inline">还没有评论，欢迎留下第一条鼓励或提问。</view>
+      </view>
+    </view>
+
+    <view wx:if="{{!posts.length}}" class="empty-hint">还没有分享内容，欢迎发布第一条康复经验。</view>
+  </view>
+</view>

@@ -1,0 +1,21 @@
+<view class="page-shell">
+  <view class="hero-card">
+    <view class="panel-title">个性化提醒设置</view>
+    <view class="panel-subtitle">服药、复查、症状自评和课程学习都可以设置提醒。</view>
+  </view>
+
+  <view wx:for="{{reminderSettings}}" wx:key="id" class="panel">
+    <view class="panel-title">{{item.label}}</view>
+    <view class="panel-subtitle">{{item.channelLabel}}</view>
+    <view class="field-group">
+      <text class="field-label">开启状态</text>
+      <switch checked="{{item.enabled}}" data-index="{{index}}" bindchange="onSwitchChange" color="#b5523d" />
+    </view>
+    <view class="field-group">
+      <text class="field-label">提醒时间</text>
+      <input class="input" value="{{item.time}}" data-index="{{index}}" bindinput="onTimeChange" />
+    </view>
+  </view>
+
+  <button id="save-reminders-btn" class="action-btn" bindtap="saveSettings">保存提醒设置</button>
+</view>

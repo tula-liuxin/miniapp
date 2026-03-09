@@ -1,0 +1,43 @@
+{
+  "routes": {
+    "home": "/pages/home/index",
+    "symptoms": "/pages/symptoms/index",
+    "actionPlan": "/pages/action-plan/index",
+    "consult": "/pages/consult/index",
+    "checkin": "/pages/checkin/index",
+    "plaza": "/pages/plaza/index",
+    "postEditor": "/pages/post-editor/index",
+    "profile": "/pages/profile/index"
+  },
+  "selectors": {
+    "homeReady": "#page-home",
+    "symptomsReady": "#page-symptoms",
+    "symptomPainInput": "#input-pain-nrs",
+    "symptomDiarrheaInput": "#input-diarrhea-count",
+    "symptomFatigueInput": "#input-fatigue-level",
+    "symptomSubmit": "#button-submit-symptoms",
+    "symptomAlertBanner": "#banner-threshold-alert",
+    "actionPlanReady": "#page-action-plan",
+    "actionPlanTitleInput": "#input-plan-title",
+    "actionPlanStrategyInput": "#input-plan-strategy",
+    "actionPlanSubmit": "#button-save-action-plan",
+    "consultReady": "#page-consult",
+    "consultMessageInput": "#input-consult-message",
+    "consultAttachSampleImage": "#button-attach-sample-image",
+    "consultSubmit": "#button-submit-consult",
+    "checkinReady": "#page-checkin",
+    "checkinTemperatureInput": "#input-temperature",
+    "checkinWeightInput": "#input-weight",
+    "checkinExerciseInput": "#input-exercise-minutes",
+    "checkinSubmit": "#button-submit-checkin",
+    "plazaReady": "#page-plaza",
+    "plazaCreateButton": "#button-open-post-editor",
+    "postEditorReady": "#page-post-editor",
+    "plazaPostTitleInput": "#input-post-title",
+    "plazaPostContentInput": "#input-post-content",
+    "plazaSubmitPost": "#button-submit-post",
+    "profileReady": "#page-profile",
+    "profileExportButton": "#button-export-records",
+    "profileEmergencyButton": "#button-emergency-help"
+  }
+}

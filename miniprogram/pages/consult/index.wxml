@@ -1,0 +1,65 @@
+<view class="page-shell" id="page-consult">
+  <view class="hero-card">
+    <view class="panel-title">医患互动区</view>
+    <view class="panel-subtitle">支持文字、示例图片和沟通模板，系统会记录 24 小时响应承诺。</view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">常见问题知识库</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{faqItems}}" wx:key="id" class="timeline-card">
+        <view class="timeline-title">{{item.question}}</view>
+        <view class="timeline-body">{{item.answer}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">发起咨询</view>
+    <view class="field-hint">也可以先点下方模板，把描述补全后直接发送。</view>
+    <view class="tag-row" style="margin-top: 18rpx;">
+      <view wx:for="{{templates}}" wx:key="id" class="tag" bindtap="applyTemplate" data-content="{{item.content}}">
+        {{item.label}}
+      </view>
+    </view>
+    <view class="field-group">
+      <textarea id="input-consult-message" class="textarea" auto-height="true" placeholder="例如：医生，我最近腹泻 3 次/天，尝试清淡饮食后仍无明显缓解……" value="{{form.content}}" bindinput="onInputChange"></textarea>
+    </view>
+    <view class="list-actions">
+      <button id="button-attach-sample-image" class="ghost-btn" bindtap="toggleSampleImage">
+        {{includeSampleImage ? '移除示例图片' : '附加示例图片'}}
+      </button>
+      <button id="button-submit-consult" class="action-btn" bindtap="submitConsultation">提交咨询</button>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">个性化指导推送</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{proactiveGuidance}}" wx:key="id" class="timeline-card">
+        <view class="timeline-title">{{item.title}}</view>
+        <view class="timeline-body">{{item.body}}</view>
+      </view>
+    </view>
+    <view wx:if="{{!proactiveGuidance.length}}" class="empty-hint">有新的个性化指导时，会在这里集中展示。</view>
+  </view>
+
+  <view class="panel">
+    <view class="panel-title">咨询记录</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{threads}}" wx:key="id" class="list-card">
+        <view class="tag-row">
+          <view class="tag">{{item.createdAtLabel}}</view>
+          <view class="tag tag-soft">{{item.replyStatusLabel}}</view>
+        </view>
+        <view class="list-body">{{item.content}}</view>
+        <view wx:if="{{item.attachment}}" class="field-hint">已附加：{{item.attachment}}</view>
+        <view class="divider"></view>
+        <view class="list-title">医护回复</view>
+        <view class="list-body">{{item.replyContent}}</view>
+        <view class="field-hint">{{item.replyAtLabel}}</view>
+      </view>
+    </view>
+    <view wx:if="{{!threads.length}}" class="empty-hint">还没有咨询记录，必要时可以主动发起一次咨询。</view>
+  </view>
+</view>

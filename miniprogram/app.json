@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/education-detail/index",
+    "pages/symptoms/index",
+    "pages/action-plan/index",
+    "pages/consult/index",
+    "pages/checkin/index",
+    "pages/weekly-report/index",
+    "pages/plaza/index",
+    "pages/post-editor/index",
+    "pages/profile/index",
+    "pages/records/index",
+    "pages/reminders/index",
+    "pages/help/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fcfaf5",
+    "navigationBarTitleText": "宫颈癌患者关护",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f3eee4"
+  },
+  "tabBar": {
+    "color": "#6e6454",
+    "selectedColor": "#b4552d",
+    "backgroundColor": "#fcfaf5",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/symptoms/index",
+        "text": "症状"
+      },
+      {
+        "pagePath": "pages/consult/index",
+        "text": "互动"
+      },
+      {
+        "pagePath": "pages/plaza/index",
+        "text": "广场"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

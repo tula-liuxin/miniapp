@@ -1,0 +1,4 @@
+AppID: wx2de74b5480418fe7
+LAN IP: 192.168.2.32
+API Base: http://192.168.2.32:3100/api
+Health: http://192.168.2.32:3100/health

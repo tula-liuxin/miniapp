@@ -1,0 +1,3 @@
+.panel .field-group:first-child {
+  margin-top: 0;
+}

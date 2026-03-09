@@ -1,0 +1,3 @@
+.panel:last-child {
+  margin-bottom: 22rpx;
+}
