@@ -5,38 +5,27 @@ const PLAN_PRESETS = [
     id: "fatigue",
     title: "疲乏加重时",
     trigger: "当疲乏等级达到 5 分时",
-    response: "我会进行 15 分钟的间歇性散步，并补充温水。"
+    response: "我会先把活动拆小，进行 15 分钟间歇步行，并补充温水后再判断是否需要休息。"
   },
   {
     id: "diarrhea",
     title: "腹泻增多时",
-    trigger: "当腹泻达到 3 次/天时",
-    response: "我会先补液、记录饮食和排便次数，并尽快联系医护团队。"
+    trigger: "当腹泻达到 3 次 / 天时",
+    response: "我会先补液、记录饮食和排便次数，并尽快联系医护团队获取进一步指导。"
   },
   {
     id: "sleep",
     title: "睡前焦虑时",
     trigger: "当晚上反复想事情、难以入睡时",
-    response: "我会先做 5 分钟呼吸放松，放下手机，再决定是否需要向家人或医生求助。"
+    response: "我会先做 5 分钟呼吸放松，放下手机，再决定是否需要和家人或医生沟通。"
   },
   {
     id: "skin",
     title: "皮肤刺痛时",
     trigger: "当放疗区域出现刺痛或明显发红时",
-    response: "我会先停止摩擦刺激，按护理指导保湿，并拍照记录变化。"
+    response: "我会先停止摩擦刺激，按护理指导保湿，并拍照记录变化，必要时及时咨询。"
   }
 ];
-
-function normalizePlanText(value) {
-  const normalized = String(value || "").trim();
-  if (normalized === "When fatigue reaches 5") {
-    return "当疲乏等级达到 5 分时";
-  }
-  if (normalized === "Take a 15 minute interval walk and hydrate") {
-    return "我会进行 15 分钟的间歇性散步，并补充温水。";
-  }
-  return normalized;
-}
 
 Page({
   data: {
@@ -115,19 +104,11 @@ Page({
     this.setData({ canSave: Boolean(trigger && response && this.data.form.reminderTime) });
   },
 
-  normalizePlan(plan) {
-    return {
-      ...plan,
-      trigger: normalizePlanText(plan.trigger),
-      response: normalizePlanText(plan.response)
-    };
-  },
-
   async loadData() {
     try {
       const payload = await request({ url: "/action-plans/overview" });
       this.setData({
-        plans: (payload.plans || []).map((plan) => this.normalizePlan(plan)),
+        plans: payload.plans || [],
         mindfulnessCourses: payload.mindfulnessCourses || [],
         communicationTemplates: payload.communicationTemplates || []
       });
@@ -179,9 +160,8 @@ Page({
     const { id } = event.currentTarget.dataset;
     try {
       const plan = await request({ url: `/action-plans/${id}/toggle`, method: "POST" });
-      const nextPlan = this.normalizePlan(plan);
       this.setData({
-        plans: this.data.plans.map((item) => (item.id === nextPlan.id ? nextPlan : item))
+        plans: this.data.plans.map((item) => (item.id === plan.id ? plan : item))
       });
     } catch (error) {
       showError(error);

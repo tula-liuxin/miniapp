@@ -1,41 +1,68 @@
 <view class="page-shell" id="page-plaza">
   <view class="hero-card">
-    <view class="panel-title">健康广场</view>
-    <view class="panel-subtitle">这里更像互助社区，而不是数据演示页。你可以分享经验，也能收到真实的互动反馈。</view>
-  </view>
-
-  <view class="panel">
-    <view class="panel-title">首页推荐</view>
-    <view class="panel-subtitle">高互动、高收藏的内容会优先展示。</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{recommendedPosts}}" wx:key="id" class="list-card">
-        <view class="list-title">{{item.title}}</view>
-        <view class="list-body">{{item.excerpt}}</view>
+    <view class="section-kicker">健康广场</view>
+    <view class="hero-title-row" style="margin-top: 14rpx;">
+      <view class="hero-title-wrap">
+        <view class="panel-title">把真实经验分享给需要的人</view>
+        <view class="panel-subtitle">这里更像互助社区，而不是数据列表。你可以发布、互动，也可以回看审核状态。</view>
       </view>
+      <view class="symbol-badge">广</view>
     </view>
-    <button id="button-open-post-editor" class="action-btn" bindtap="openComposer" style="margin-top: 18rpx;">发布经验分享</button>
+    <button id="button-open-post-editor" class="action-btn" bindtap="openComposer" style="margin-top: 22rpx;">发布经验分享</button>
   </view>
 
   <view class="panel">
-    <view class="panel-title">最新经验分享</view>
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">首页推荐</view>
+        <view class="section-title">先看看大家收藏和互动最多的内容</view>
+      </view>
+      <view class="symbol-badge symbol-badge-soft">荐</view>
+    </view>
+
+    <scroll-view scroll-x class="plaza-scroll-row" show-scrollbar="false" style="margin-top: 18rpx;">
+      <view class="plaza-scroll-track">
+        <view wx:for="{{recommendedPosts}}" wx:key="id" class="plaza-reco-card">
+          <view class="tag tag-soft">推荐内容</view>
+          <view class="list-title">{{item.title}}</view>
+          <view class="list-body">{{item.excerpt}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="panel">
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">最新分享</view>
+        <view class="section-title">每条内容都带着真实的恢复过程</view>
+      </view>
+      <view class="symbol-badge">帖</view>
+    </view>
+
     <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{posts}}" wx:key="id" class="list-card">
-        <view class="post-meta-row">
-          <view class="tag-row post-tags-row">
+      <view wx:for="{{posts}}" wx:key="id" class="list-card plaza-post-card">
+        <view class="post-head">
+          <view class="tag-row">
             <view class="tag">{{item.authorName}}</view>
-            <view class="tag {{item.status === 'approved' ? 'tag-soft' : 'tag-danger'}}">{{item.statusLabel}}</view>
+            <view class="tag {{item.statusToneClass}}">{{item.statusLabel}}</view>
             <view class="tag tag-soft">{{item.createdAtLabel}}</view>
           </view>
+          <view class="post-meta-stats">{{item.commentCount}} 条评论</view>
+        </view>
+
+        <view wx:if="{{item.status !== 'approved'}}" class="moderation-note">
+          内容已进入审核流程，审核通过后会对更多患者可见。
         </view>
 
         <view class="list-title">{{item.title}}</view>
         <view class="list-body">{{item.content}}</view>
 
         <view class="tag-row" style="margin-top: 18rpx;">
-          <view wx:for="{{item.tags}}" wx:key="index" class="tag">{{item}}</view>
+          <view wx:for="{{item.tags}}" wx:key="index" class="tag tag-warm">{{item}}</view>
         </view>
 
-        <view class="list-actions">
+        <view class="post-actions">
           <button
             class="ghost-btn {{item.likedByMe ? 'ghost-btn-active' : ''}}"
             bindtap="likePost"
@@ -54,16 +81,16 @@
           </button>
         </view>
 
-        <view class="list-actions" wx:if="{{item.isOwner}}">
-          <button class="secondary-btn" bindtap="editPost" data-id="{{item.id}}">编辑</button>
+        <view class="post-actions" wx:if="{{item.isOwner}}">
+          <button class="secondary-btn" bindtap="editPost" data-id="{{item.id}}">编辑内容</button>
           <button class="danger-btn" bindtap="deletePost" data-id="{{item.id}}" disabled="{{busyActions['delete-' + item.id]}}">删除</button>
         </view>
 
-        <view class="field-group">
+        <view class="comment-composer">
           <text class="field-label">评论交流</text>
           <input
             class="input"
-            placeholder="写下你的鼓励或追问"
+            placeholder="写下你的鼓励、追问或补充"
             value="{{commentDrafts[item.id]}}"
             data-id="{{item.id}}"
             bindinput="onCommentInput"
@@ -91,6 +118,9 @@
       </view>
     </view>
 
-    <view wx:if="{{!posts.length}}" class="empty-hint">还没有分享内容，欢迎发布第一条康复经验。</view>
+    <view wx:if="{{!posts.length}}" class="empty-hint">
+      <view class="empty-title">还没有分享内容</view>
+      <view style="margin-top: 12rpx;">欢迎发布第一条康复经验，让后来的人少一点慌张。</view>
+    </view>
   </view>
 </view>

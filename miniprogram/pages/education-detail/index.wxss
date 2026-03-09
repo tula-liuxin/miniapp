@@ -1,3 +1,3 @@
-.panel .list-body {
+.list-actions {
   margin-top: 18rpx;
 }

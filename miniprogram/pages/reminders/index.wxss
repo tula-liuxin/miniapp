@@ -1,3 +1,4 @@
-.panel:last-child {
-  margin-bottom: 22rpx;
+.choice-row .choice-pill {
+  min-width: 110rpx;
+  text-align: center;
 }

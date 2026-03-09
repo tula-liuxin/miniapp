@@ -13,14 +13,16 @@
   </view>
 
   <view class="panel">
-    <view class="panel-title">正文内容</view>
+    <view class="section-kicker">正文内容</view>
+    <view class="panel-title">详细说明</view>
     <view class="list-body">{{item.content}}</view>
   </view>
 
   <view class="panel" wx:if="{{item.keyPoints && item.keyPoints.length}}">
-    <view class="panel-title">重点提示</view>
+    <view class="section-kicker">重点提示</view>
+    <view class="panel-title">适合记住的几个点</view>
     <view class="tag-row" style="margin-top: 18rpx;">
-      <view wx:for="{{item.keyPoints}}" wx:key="index" class="tag">{{item}}</view>
+      <view wx:for="{{item.keyPoints}}" wx:key="index" wx:for-item="point" class="tag">{{point}}</view>
     </view>
   </view>
 </view>

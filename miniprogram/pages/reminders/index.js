@@ -1,8 +1,11 @@
 const { request, showError } = require("../../utils/api");
 
+const PRESET_TIMES = ["08:00", "12:00", "19:30", "21:00"];
+
 Page({
   data: {
-    reminderSettings: []
+    reminderSettings: [],
+    presetTimes: PRESET_TIMES
   },
 
   onShow() {
@@ -23,9 +26,14 @@ Page({
     this.setData({ [`reminderSettings[${index}].enabled`]: event.detail.value });
   },
 
-  onTimeChange(event) {
+  onTimePick(event) {
     const { index } = event.currentTarget.dataset;
     this.setData({ [`reminderSettings[${index}].time`]: event.detail.value });
+  },
+
+  applyPresetTime(event) {
+    const { index, time } = event.currentTarget.dataset;
+    this.setData({ [`reminderSettings[${index}].time`]: time });
   },
 
   async saveSettings() {

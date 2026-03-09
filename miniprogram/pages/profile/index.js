@@ -1,9 +1,18 @@
 const { request, showError } = require("../../utils/api");
 
+function extractPhone(value) {
+  const match = String(value || "").match(/(\d[\d-]{7,}\d)/);
+  return match ? match[1].replace(/-/g, "") : "";
+}
+
 Page({
   data: {
     profile: null,
-    summary: null
+    summary: null,
+    hotlineLabel: "专科热线",
+    hotlineNumber: "",
+    hotlineDisplayText: "热线号码将在帮助页显示",
+    emergencySteps: []
   },
 
   onShow() {
@@ -12,11 +21,20 @@ Page({
 
   async loadData() {
     try {
-      const [profile, summary] = await Promise.all([
+      const [profile, summary, help] = await Promise.all([
         request({ url: "/patient/profile" }),
-        request({ url: "/records/summary" })
+        request({ url: "/records/summary" }),
+        request({ url: "/help/content" }).catch(() => ({}))
       ]);
-      this.setData({ profile, summary });
+      const hotlineNumber = help.hotlineNumber || extractPhone(help.hotline);
+      this.setData({
+        profile,
+        summary,
+        hotlineLabel: help.hotlineLabel || "专科热线",
+        hotlineNumber,
+        hotlineDisplayText: hotlineNumber || "热线号码将在帮助页显示",
+        emergencySteps: help.emergencySteps || []
+      });
     } catch (error) {
       showError(error);
     }
@@ -43,5 +61,19 @@ Page({
     } catch (error) {
       showError(error);
     }
+  },
+
+  callHotline() {
+    if (!this.data.hotlineNumber) {
+      wx.showToast({ title: "暂未配置热线号码", icon: "none" });
+      return;
+    }
+
+    wx.makePhoneCall({
+      phoneNumber: this.data.hotlineNumber,
+      fail: () => {
+        wx.showToast({ title: "当前环境无法直接拨号", icon: "none" });
+      }
+    });
   }
 });

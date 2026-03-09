@@ -2,15 +2,19 @@ const { request, showError } = require("../../utils/api");
 const { formatDate } = require("../../utils/format");
 
 function decoratePost(post) {
+  const comments = (post.comments || []).map((comment) => ({
+    ...comment,
+    createdAtLabel: formatDate(comment.createdAt)
+  }));
+
   return {
     ...post,
     likedByMe: Boolean(post.likedByMe),
     favoritedByMe: Boolean(post.favoritedByMe),
     createdAtLabel: formatDate(post.createdAt),
-    comments: (post.comments || []).map((comment) => ({
-      ...comment,
-      createdAtLabel: formatDate(comment.createdAt)
-    }))
+    comments,
+    commentCount: comments.length,
+    statusToneClass: post.status === "approved" ? "tag-soft" : "tag-warm"
   };
 }
 
@@ -74,7 +78,7 @@ Page({
 
     const { confirm } = await showConfirm({
       title: "删除这条分享？",
-      content: "删除后将无法恢复，评论也会一起移除。",
+      content: "删除后正文和评论都无法恢复。",
       confirmColor: "#c95f3a"
     });
 

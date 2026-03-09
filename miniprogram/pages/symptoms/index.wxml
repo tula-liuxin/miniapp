@@ -1,44 +1,116 @@
 <view class="page-shell" id="page-symptoms">
   <view class="hero-card">
-    <view class="panel-title">标准化症状自评</view>
-    <view class="panel-subtitle">每日完成一次 MSAS 重点症状评估，系统自动计算困扰指数与风险等级。</view>
+    <view class="section-kicker">标准化自评</view>
+    <view class="hero-title-row" style="margin-top: 14rpx;">
+      <view class="hero-title-wrap">
+        <view class="panel-title">把今天的症状说清楚</view>
+        <view class="panel-subtitle">完成一次重点症状自评后，系统会生成困扰指数、护理建议和趋势提醒。</view>
+      </view>
+      <view class="symbol-badge">评</view>
+    </view>
+
+    <view class="preview-card preview-{{preview.tone}}">
+      <view class="preview-top">
+        <view>
+          <view class="tag {{preview.tone === 'danger' ? 'tag-danger' : preview.tone === 'warm' ? 'tag-warm' : 'tag-soft'}}">
+            {{preview.tone === 'danger' ? '高优先级' : preview.tone === 'warm' ? '重点关注' : '可继续观察'}}
+          </view>
+          <view class="list-title" style="margin-top: 14rpx;">{{preview.title}}</view>
+        </view>
+        <view class="preview-score">
+          <view class="preview-score-value">{{preview.distressIndex}}</view>
+          <view class="preview-score-label">困扰指数预估</view>
+        </view>
+      </view>
+      <view class="list-body">{{preview.description}}</view>
+    </view>
   </view>
 
   <view class="panel">
-    <view class="field-group">
-      <text class="field-label">疼痛 NRS</text>
-      <input id="input-pain-nrs" class="input" type="number" value="{{form.painNrs}}" data-key="painNrs" bindinput="onInputChange" />
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">填写症状</view>
+        <view class="section-title">今天最明显的变化是什么</view>
+        <view class="section-note">建议按照实际体感填写，不需要追求“填得漂亮”，真实记录最有帮助。</view>
+      </view>
+      <view class="symbol-badge symbol-badge-soft">记</view>
     </view>
-    <view class="field-group">
-      <text class="field-label">恶心程度</text>
-      <slider min="0" max="10" step="1" value="{{form.nausea}}" data-key="nausea" bindchange="onSliderChange" activeColor="#b5523d" backgroundColor="#eaded3" />
+
+    <view class="card-list">
+      <view class="field-shell">
+        <text class="field-label">疼痛 NRS</text>
+        <view class="input-with-value">
+          <input id="input-pain-nrs" class="input" type="number" value="{{form.painNrs}}" data-key="painNrs" bindinput="onInputChange" />
+          <view class="mini-value">{{form.painNrs}} / 10</view>
+        </view>
+        <view class="field-hint">7 分及以上时系统会触发高优先级提醒。</view>
+      </view>
+
+      <view class="field-shell">
+        <text class="field-label">恶心程度</text>
+        <view class="slider-head">
+          <text class="field-hint">0 表示没有，10 表示非常明显</text>
+          <text class="mini-value">{{form.nausea}}</text>
+        </view>
+        <slider min="0" max="10" step="1" value="{{form.nausea}}" data-key="nausea" bindchange="onSliderChange" activeColor="#b5523d" backgroundColor="#eaded3" />
+      </view>
+
+      <view class="field-shell">
+        <text class="field-label">腹泻次数 / 天</text>
+        <view class="input-with-value">
+          <input id="input-diarrhea-count" class="input" type="number" value="{{form.diarrheaCount}}" data-key="diarrheaCount" bindinput="onInputChange" />
+          <view class="mini-value">{{form.diarrheaCount}} 次</view>
+        </view>
+        <view class="field-hint">达到 3 次及以上时，会自动进入强化管理提示。</view>
+      </view>
+
+      <view class="field-shell">
+        <text class="field-label">放射性皮炎</text>
+        <view class="slider-head">
+          <text class="field-hint">请按今天最明显的皮肤不适程度填写</text>
+          <text class="mini-value">{{form.dermatitis}}</text>
+        </view>
+        <slider min="0" max="10" step="1" value="{{form.dermatitis}}" data-key="dermatitis" bindchange="onSliderChange" activeColor="#b5523d" backgroundColor="#eaded3" />
+      </view>
+
+      <view class="field-shell">
+        <text class="field-label">骨髓抑制风险感受</text>
+        <view class="slider-head">
+          <text class="field-hint">结合乏力、感染担心或出血迹象的主观感受填写</text>
+          <text class="mini-value">{{form.marrowSuppression}}</text>
+        </view>
+        <slider min="0" max="10" step="1" value="{{form.marrowSuppression}}" data-key="marrowSuppression" bindchange="onSliderChange" activeColor="#b5523d" backgroundColor="#eaded3" />
+      </view>
+
+      <view class="field-shell">
+        <text class="field-label">癌因性疲乏等级</text>
+        <view class="input-with-value">
+          <input id="input-fatigue-level" class="input" type="number" value="{{form.fatigue}}" data-key="fatigue" bindinput="onInputChange" />
+          <view class="mini-value">{{form.fatigue}} / 10</view>
+        </view>
+      </view>
+
+      <view class="field-shell">
+        <text class="field-label">补充说明</text>
+        <textarea class="textarea" auto-height="true" placeholder="记录今天的感受、诱因和应对效果" value="{{form.note}}" data-key="note" bindinput="onInputChange"></textarea>
+      </view>
     </view>
-    <view class="field-group">
-      <text class="field-label">腹泻次数 / 天</text>
-      <input id="input-diarrhea-count" class="input" type="number" value="{{form.diarrheaCount}}" data-key="diarrheaCount" bindinput="onInputChange" />
-      <view class="field-hint">腹泻达到 3 次/天及以上时，会触发强化管理提示。</view>
+
+    <view class="sticky-submit">
+      <view class="field-hint">完成后系统会同步刷新最新评估、护理指导和趋势提醒。</view>
+      <button id="button-submit-symptoms" class="action-btn" bindtap="submitAssessment">提交今日自评</button>
     </view>
-    <view class="field-group">
-      <text class="field-label">放射性皮炎</text>
-      <slider min="0" max="10" step="1" value="{{form.dermatitis}}" data-key="dermatitis" bindchange="onSliderChange" activeColor="#b5523d" backgroundColor="#eaded3" />
-    </view>
-    <view class="field-group">
-      <text class="field-label">骨髓抑制风险感受</text>
-      <slider min="0" max="10" step="1" value="{{form.marrowSuppression}}" data-key="marrowSuppression" bindchange="onSliderChange" activeColor="#b5523d" backgroundColor="#eaded3" />
-    </view>
-    <view class="field-group">
-      <text class="field-label">癌因性疲乏等级</text>
-      <input id="input-fatigue-level" class="input" type="number" value="{{form.fatigue}}" data-key="fatigue" bindinput="onInputChange" />
-    </view>
-    <view class="field-group">
-      <text class="field-label">补充说明</text>
-      <textarea class="textarea" auto-height="true" placeholder="记录今天的感受、诱因和应对效果" value="{{form.note}}" data-key="note" bindinput="onInputChange"></textarea>
-    </view>
-    <button id="button-submit-symptoms" class="action-btn" bindtap="submitAssessment">提交今日自评</button>
   </view>
 
   <view class="panel" wx:if="{{latestAssessment}}">
-    <view class="panel-title">最新评估结果</view>
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">最新结果</view>
+        <view class="section-title">这次记录反映了什么</view>
+      </view>
+      <view class="symbol-badge">析</view>
+    </view>
+
     <view class="grid-two" style="margin-top: 18rpx;">
       <view class="stat-card">
         <view class="stat-value">{{latestAssessment.distressIndex}}</view>
@@ -49,26 +121,44 @@
         <view class="stat-label">风险等级</view>
       </view>
     </view>
-    <view class="list-body">{{latestAssessment.summary}}</view>
+    <view class="inline-note">{{latestAssessment.summary}}</view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">针对性护理指导</view>
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">护理指导</view>
+        <view class="section-title">先做哪些应对动作</view>
+      </view>
+      <view class="symbol-badge symbol-badge-soft">护</view>
+    </view>
+
     <view class="card-list" style="margin-top: 18rpx;">
       <view wx:for="{{guidance}}" wx:key="id" class="list-card">
         <view class="tag-row">
           <view class="tag">{{item.topic}}</view>
-          <view class="tag {{item.urgent ? 'tag-danger' : 'tag-soft'}}">{{item.urgent ? '重点观察' : '常规管理'}}</view>
+          <view class="tag {{item.urgent ? 'tag-danger' : 'tag-soft'}}">{{item.urgent ? '重点处理' : '日常管理'}}</view>
         </view>
         <view class="list-title">{{item.title}}</view>
         <view class="list-body">{{item.body}}</view>
       </view>
     </view>
-    <view wx:if="{{!guidance.length}}" class="empty-hint">提交症状后，这里会生成针对性的护理建议。</view>
+
+    <view wx:if="{{!guidance.length}}" class="empty-hint">
+      <view class="empty-title">提交症状后，这里会生成针对性的护理建议</view>
+      <view style="margin-top: 12rpx;">如果你今天状态比较平稳，也建议照常完成记录，系统能更准确地识别后续变化。</view>
+    </view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">症状趋势</view>
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">趋势追踪</view>
+        <view class="section-title">最近的症状变化</view>
+      </view>
+      <view class="symbol-badge">趋</view>
+    </view>
+
     <view wx:for="{{trends}}" wx:key="label" class="chart-row">
       <view class="chart-label">
         <text>{{item.label}}</text>
@@ -78,20 +168,38 @@
         <view class="chart-fill" style="width: {{item.percent}}%;"></view>
       </view>
     </view>
-    <view wx:if="{{!trends.length}}" class="empty-hint">完成第一条自评记录后，将在这里显示趋势变化。</view>
+
+    <view wx:if="{{!trends.length}}" class="empty-hint">
+      <view class="empty-title">完成第一条自评后，这里会出现趋势</view>
+      <view style="margin-top: 12rpx;">连续记录几天后，你和医护人员都会更容易看出哪些症状正在变化。</view>
+    </view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">智能预警</view>
+    <view class="section-heading">
+      <view class="section-heading-main">
+        <view class="section-kicker">智能提醒</view>
+        <view class="section-title">需要尽快关注的信息</view>
+      </view>
+      <view class="symbol-badge symbol-badge-danger">警</view>
+    </view>
+
     <view class="card-list" style="margin-top: 18rpx;">
       <view wx:for="{{alerts}}" wx:key="id" class="timeline-card" id="{{index === 0 ? 'banner-threshold-alert' : ''}}">
-        <view class="tag tag-danger">{{item.levelLabel}}</view>
+        <view class="tag-row">
+          <view class="tag tag-danger">{{item.levelLabel}}</view>
+          <view class="tag tag-soft">{{item.createdAtLabel}}</view>
+        </view>
         <view class="timeline-title">{{item.title}}</view>
         <view class="timeline-body">{{item.message}}</view>
-        <view class="timeline-time">{{item.createdAtLabel}}</view>
       </view>
     </view>
-    <view wx:if="{{!alerts.length}}" class="empty-hint">当前没有新预警，继续保持每日记录。</view>
-    <button class="secondary-btn" bindtap="openActionPlan" style="margin-top: 18rpx;">配置行动计划</button>
+
+    <view wx:if="{{!alerts.length}}" class="empty-hint">
+      <view class="empty-title">当前没有新的预警</view>
+      <view style="margin-top: 12rpx;">继续保持每日记录，有波动时系统会及时提醒你。</view>
+    </view>
+
+    <button class="secondary-btn" bindtap="openActionPlan" style="margin-top: 18rpx;">去完善行动计划</button>
   </view>
 </view>

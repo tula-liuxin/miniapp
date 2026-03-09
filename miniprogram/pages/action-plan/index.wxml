@@ -1,22 +1,29 @@
-<view class="page-shell" id="page-action-plan">
+<view class="page-shell with-sticky-cta" id="page-action-plan">
   <view class="hero-card">
-    <view class="panel-title">问题解决技能训练</view>
-    <view class="panel-subtitle">先想清楚“什么时候容易出问题”，再提前写好“我准备怎么做”。这样提醒到来时会更容易执行。</view>
+    <view class="section-kicker">行动计划</view>
+    <view class="panel-title">把容易慌乱的时刻提前写好答案</view>
+    <view class="panel-subtitle">先想清楚“什么时候容易出问题”，再写下“我准备怎么做”，提醒出现时会更容易执行。</view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">先选一个常见场景</view>
-    <view class="panel-subtitle">不想从零开始时，可以直接点选并自动带入内容。</view>
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">常用模板</view>
+        <view class="panel-title">先选一个常见场景</view>
+      </view>
+    </view>
+
     <view class="preset-grid">
       <view
         wx:for="{{planPresets}}"
         wx:key="id"
-        class="preset-card {{selectedPresetId === item.id ? 'preset-card-active' : ''}}"
-        data-id="{{item.id}}"
+        wx:for-item="preset"
+        class="preset-card {{selectedPresetId === preset.id ? 'preset-card-active' : ''}}"
+        data-id="{{preset.id}}"
         bindtap="applyPreset"
       >
-        <view class="preset-title">{{item.title}}</view>
-        <view class="preset-body">{{item.trigger}}</view>
+        <view class="preset-title">{{preset.title}}</view>
+        <view class="preset-body">{{preset.trigger}}</view>
       </view>
     </view>
   </view>
@@ -27,7 +34,7 @@
       <input
         id="input-plan-title"
         class="input"
-        placeholder="例如：疲劳等级达到 5 分"
+        placeholder="例如：当疲乏达到 5 分时"
         value="{{form.trigger}}"
         data-key="trigger"
         bindinput="onFieldChange"
@@ -40,7 +47,7 @@
         id="input-plan-strategy"
         class="textarea"
         auto-height="true"
-        placeholder="例如：进行 15 分钟的间歇性散步并补充温水"
+        placeholder="例如：先暂停活动，分段步行 15 分钟并补充温水，再继续观察"
         value="{{form.response}}"
         data-key="response"
         bindinput="onFieldChange"
@@ -51,12 +58,84 @@
       <text class="field-label">提醒时间</text>
       <picker mode="time" value="{{form.reminderTime}}" bindchange="onTimeChange">
         <view class="picker-field">
-          <text class="picker-value">{{form.reminderTime}}</text>
-          <text class="picker-arrow">滑动选择</text>
+          <text>{{form.reminderTime}}</text>
+          <text class="field-hint">点击选择</text>
         </view>
       </picker>
     </view>
+  </view>
 
+  <view class="panel">
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">我的计划</view>
+        <view class="panel-title">已经保存的提醒</view>
+      </view>
+    </view>
+
+    <view class="card-list" style="margin-top: 18rpx;" wx:if="{{plans.length}}">
+      <view wx:for="{{plans}}" wx:key="id" wx:for-item="plan" class="list-card">
+        <view class="plan-head">
+          <view class="tag-row">
+            <view class="tag">{{plan.reminderTime}}</view>
+            <view class="tag {{plan.active ? 'tag-soft' : 'tag-danger'}}">{{plan.active ? '已启用' : '已暂停'}}</view>
+          </view>
+          <switch checked="{{plan.active}}" data-id="{{plan.id}}" bindchange="togglePlan" color="#c86a3b" />
+        </view>
+        <view class="list-title">{{plan.trigger}}</view>
+        <view class="list-body">{{plan.response}}</view>
+        <view class="plan-hint">{{plan.active ? '提醒会在设定时间出现，帮助你把计划真正执行下去。' : '当前已暂停提醒，需要时重新打开即可。'}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{!plans.length}}" class="empty-state">
+      <view class="empty-icon">策</view>
+      <view class="empty-title">还没有行动计划</view>
+      <view class="empty-desc">先从一个最常见的困难场景开始，写下你准备怎样应对。</view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">放松支持</view>
+        <view class="panel-title">适合配合计划执行的课程</view>
+      </view>
+    </view>
+
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{mindfulnessCourses}}" wx:key="id" wx:for-item="course" class="timeline-card">
+        <view class="tag">{{course.durationMinutes}} 分钟</view>
+        <view class="timeline-title">{{course.title}}</view>
+        <view class="timeline-body">{{course.summary}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">沟通模板</view>
+        <view class="panel-title">和家人或医生沟通时可直接复制</view>
+      </view>
+    </view>
+
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view
+        wx:for="{{communicationTemplates}}"
+        wx:key="index"
+        wx:for-item="template"
+        class="timeline-card tappable-card"
+        data-content="{{template}}"
+        bindtap="copyTemplate"
+      >
+        <view class="timeline-body">{{template}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="sticky-cta">
+    <view class="sticky-hint">写得越具体，提醒出现时越容易马上照着做。</view>
     <button
       id="button-save-action-plan"
       class="action-btn {{!canSave ? 'action-btn-disabled' : ''}}"
@@ -65,52 +144,5 @@
     >
       {{saving ? '保存中...' : '保存行动计划'}}
     </button>
-  </view>
-
-  <view class="panel">
-    <view class="panel-title">我的计划</view>
-    <view class="panel-subtitle">开启后会按设定时间提醒；需要时可以像开关一样随时暂停。</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{plans}}" wx:key="id" class="list-card">
-        <view class="plan-head">
-          <view class="tag-row">
-            <view class="tag">{{item.reminderTime}}</view>
-            <view class="tag {{item.active ? 'tag-soft' : 'tag-danger'}}">{{item.active ? '已启用' : '已暂停'}}</view>
-          </view>
-          <switch checked="{{item.active}}" data-id="{{item.id}}" bindchange="togglePlan" color="#c86a3b" />
-        </view>
-        <view class="list-title">{{item.trigger}}</view>
-        <view class="list-body">{{item.response}}</view>
-        <view class="plan-hint">{{item.active ? '提醒会在设定时间出现，帮助你把计划真正执行下去。' : '提醒已暂停，需要时再打开即可。'}}</view>
-      </view>
-    </view>
-    <view wx:if="{{!plans.length}}" class="empty-hint">先添加一条属于你的行动计划吧。</view>
-  </view>
-
-  <view class="panel">
-    <view class="panel-title">心理调适指导</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{mindfulnessCourses}}" wx:key="id" class="timeline-card">
-        <view class="tag">{{item.durationMinutes}} 分钟</view>
-        <view class="timeline-title">{{item.title}}</view>
-        <view class="timeline-body">{{item.summary}}</view>
-      </view>
-    </view>
-  </view>
-
-  <view class="panel">
-    <view class="panel-title">家庭支持沟通模板</view>
-    <view class="panel-subtitle">点击任一模板即可复制，和家人或医生沟通时能更快组织语言。</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view
-        wx:for="{{communicationTemplates}}"
-        wx:key="index"
-        class="timeline-card tappable-card"
-        data-content="{{item}}"
-        bindtap="copyTemplate"
-      >
-        <view class="timeline-body">{{item}}</view>
-      </view>
-    </view>
   </view>
 </view>

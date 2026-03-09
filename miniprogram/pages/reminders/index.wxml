@@ -1,21 +1,46 @@
-<view class="page-shell">
+<view class="page-shell with-sticky-cta" id="page-reminders">
   <view class="hero-card">
-    <view class="panel-title">个性化提醒设置</view>
-    <view class="panel-subtitle">服药、复查、症状自评和课程学习都可以设置提醒。</view>
+    <view class="section-kicker">提醒设置</view>
+    <view class="panel-title">把关键动作交给系统提醒</view>
+    <view class="panel-subtitle">服药、复查、症状自评和课程学习都可以统一设置，避免临近时间才想起来。</view>
   </view>
 
-  <view wx:for="{{reminderSettings}}" wx:key="id" class="panel">
-    <view class="panel-title">{{item.label}}</view>
-    <view class="panel-subtitle">{{item.channelLabel}}</view>
-    <view class="field-group">
-      <text class="field-label">开启状态</text>
-      <switch checked="{{item.enabled}}" data-index="{{index}}" bindchange="onSwitchChange" color="#b5523d" />
+  <view wx:for="{{reminderSettings}}" wx:key="id" wx:for-item="setting" class="panel">
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">提醒项</view>
+        <view class="panel-title">{{setting.label}}</view>
+        <view class="panel-subtitle">{{setting.channelLabel}}</view>
+      </view>
+      <switch checked="{{setting.enabled}}" data-index="{{index}}" bindchange="onSwitchChange" color="#b5523d" />
     </view>
-    <view class="field-group">
+
+    <view class="field-group" style="margin-top: 18rpx;">
       <text class="field-label">提醒时间</text>
-      <input class="input" value="{{item.time}}" data-index="{{index}}" bindinput="onTimeChange" />
+      <picker mode="time" value="{{setting.time}}" data-index="{{index}}" bindchange="onTimePick">
+        <view class="picker-field">
+          <text>{{setting.time}}</text>
+          <text class="field-hint">点击选择</text>
+        </view>
+      </picker>
+      <view class="choice-row" style="margin-top: 16rpx;">
+        <view
+          wx:for="{{presetTimes}}"
+          wx:key="*this"
+          wx:for-item="preset"
+          class="choice-pill {{setting.time === preset ? 'active' : ''}}"
+          data-index="{{index}}"
+          data-time="{{preset}}"
+          bindtap="applyPresetTime"
+        >
+          {{preset}}
+        </view>
+      </view>
     </view>
   </view>
 
-  <button id="save-reminders-btn" class="action-btn" bindtap="saveSettings">保存提醒设置</button>
+  <view class="sticky-cta">
+    <view class="sticky-hint">保存后，系统会按当前设置继续推送提醒。</view>
+    <button id="save-reminders-btn" class="action-btn" bindtap="saveSettings">保存提醒设置</button>
+  </view>
 </view>

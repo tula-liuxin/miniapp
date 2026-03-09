@@ -1,99 +1,246 @@
 <view class="page-shell" id="page-home">
-  <view class="hero-card" id="home-hero">
-    <view class="panel-title">{{summary.greeting}}</view>
-    <view class="panel-subtitle">{{summary.patientName}} · {{summary.treatmentStageLabel}}</view>
-    <view class="tag-row" style="margin-top: 18rpx;">
-      <view class="tag">下次复查 {{summary.nextFollowUpDate}}</view>
-      <view class="tag tag-soft">活跃预警 {{summary.activeAlerts}} 条</view>
+  <view wx:if="{{loading}}" class="card-list">
+    <view class="hero-card skeleton-card">
+      <view class="skeleton-chip"></view>
+      <view class="skeleton-line medium"></view>
+      <view class="skeleton-line"></view>
+      <view class="skeleton-line short"></view>
+    </view>
+    <view class="grid-two">
+      <view class="skeleton-card">
+        <view class="skeleton-line short"></view>
+        <view class="skeleton-line medium"></view>
+        <view class="skeleton-line short"></view>
+      </view>
+      <view class="skeleton-card">
+        <view class="skeleton-line short"></view>
+        <view class="skeleton-line medium"></view>
+        <view class="skeleton-line short"></view>
+      </view>
+    </view>
+    <view class="skeleton-card">
+      <view class="skeleton-line medium"></view>
+      <view class="skeleton-line"></view>
+      <view class="skeleton-line short"></view>
     </view>
   </view>
 
-  <view class="grid-two">
-    <view class="stat-card">
-      <view class="stat-value">{{summary.symptomDistressIndex}}</view>
-      <view class="stat-label">症状困扰指数</view>
-    </view>
-    <view class="stat-card">
-      <view class="stat-value">{{summary.learningProgress}}%</view>
-      <view class="stat-label">学习进度</view>
-    </view>
-  </view>
+  <block wx:else>
+    <view class="hero-card" id="home-hero">
+      <view class="section-kicker">今日总览</view>
+      <view class="panel-title home-hero-title">{{summary.greeting}}</view>
+      <view class="panel-subtitle">{{summary.patientName}} · {{summary.treatmentStageLabel}}</view>
 
-  <view class="panel">
-    <view class="panel-title">今日快速入口</view>
-    <view class="quick-grid" style="margin-top: 18rpx;">
-      <view class="quick-item" data-url="/pages/checkin/index" bindtap="openPage">
-        <view class="quick-title">每日健康打卡</view>
-        <view class="quick-desc">记录生命体征、饮食、运动和情绪状态。</view>
-      </view>
-      <view class="quick-item" data-url="/pages/action-plan/index" bindtap="openPage">
-        <view class="quick-title">症状行动计划</view>
-        <view class="quick-desc">把应对步骤写成提醒，督促自己执行。</view>
-      </view>
-      <view class="quick-item" data-url="/pages/records/index" bindtap="openPage">
-        <view class="quick-title">健康记录汇总</view>
-        <view class="quick-desc">查看症状、咨询、教育学习的整合档案。</view>
-      </view>
-      <view class="quick-item" data-url="/pages/reminders/index" bindtap="openPage">
-        <view class="quick-title">提醒设置</view>
-        <view class="quick-desc">服药、复查、自评和课程提醒统一管理。</view>
-      </view>
-    </view>
-  </view>
-
-  <view class="panel">
-    <view class="panel-title">阶段化知识教育</view>
-    <view class="panel-subtitle">根据患者当前治疗阶段动态调整内容重点。</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{educationFeed}}" wx:key="id" class="list-card">
-        <view class="tag-row">
-          <view class="tag">{{item.mediaTypeLabel}}</view>
-          <view class="tag tag-soft">{{item.stageLabel}}</view>
-          <view class="tag tag-soft">{{item.durationLabel}}</view>
+      <view class="hero-meta">
+        <view class="tag">下次复查 {{summary.nextFollowUpDate}}</view>
+        <view class="tag tag-soft">学习进度 {{summary.learningProgress}}%</view>
+        <view class="tag {{summary.activeAlerts ? 'tag-danger' : 'tag-success'}}">
+          {{summary.activeAlerts ? '有提醒待处理' : '当前状态平稳'}}
         </view>
-        <view class="list-title">{{item.title}}</view>
-        <view class="list-body">{{item.summary}}</view>
-        <view class="list-actions">
-          <button class="ghost-btn" data-id="{{item.id}}" bindtap="toggleFavorite">
-            {{item.isFavorite ? '取消收藏' : '收藏内容'}}
-          </button>
-          <button class="secondary-btn" data-id="{{item.id}}" bindtap="openDetail">查看详情</button>
+      </view>
+
+      <view class="progress-card">
+        <view class="progress-label">
+          <text>本阶段自我管理完成度</text>
+          <text>{{summary.learningProgress}}%</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{summary.learningProgress}}%;"></view>
         </view>
       </view>
     </view>
-  </view>
 
-  <view class="panel">
-    <view class="panel-title">个性化教育中心</view>
-    <view class="panel-subtitle">行动计划、正念课程和沟通支持集中展示。</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{actionPlanHighlights}}" wx:key="id" class="list-card">
-        <view class="tag">行动计划</view>
-        <view class="list-title">{{item.trigger}}</view>
-        <view class="list-body">建议动作：{{item.response}}</view>
+    <view class="grid-two home-stat-grid">
+      <view class="stat-card">
+        <view class="stat-eyebrow">症状管理</view>
+        <view class="stat-value">{{summary.symptomDistressIndex}}</view>
+        <view class="stat-label">当前困扰指数</view>
+        <view class="stat-footnote">连续记录后，趋势判断会更准确。</view>
       </view>
-      <view wx:for="{{mindfulnessCourses}}" wx:key="id" class="list-card">
-        <view class="tag tag-soft">{{item.durationLabel}}</view>
-        <view class="list-title">{{item.title}}</view>
-        <view class="list-body">{{item.summary}}</view>
+      <view class="stat-card">
+        <view class="stat-eyebrow">风险提醒</view>
+        <view class="stat-value">{{summary.activeAlerts}}</view>
+        <view class="stat-label">活跃提醒</view>
+        <view class="stat-footnote">{{summary.activeAlerts ? '优先查看预警和建议。' : '当前没有新的高优先提醒。'}}</view>
       </view>
     </view>
-  </view>
 
-  <view class="panel">
-    <view class="panel-title">智能预警与优质经验</view>
-    <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{alerts}}" wx:key="id" class="timeline-card">
-        <view class="tag tag-danger">{{item.levelLabel}}</view>
-        <view class="timeline-title">{{item.title}}</view>
-        <view class="timeline-body">{{item.message}}</view>
-        <view class="timeline-time">{{item.createdAtLabel}}</view>
+    <view wx:if="{{priorityAction}}" class="panel">
+      <view class="section-head">
+        <view class="section-title-wrap">
+          <view class="section-kicker">优先处理</view>
+          <view class="panel-title">今天先做这一件</view>
+        </view>
+        <view class="section-icon">{{priorityAction.iconText}}</view>
       </view>
-      <view wx:for="{{recommendedPosts}}" wx:key="id" class="list-card">
-        <view class="tag">广场推荐</view>
-        <view class="list-title">{{item.title}}</view>
-        <view class="list-body">{{item.excerpt}}</view>
+
+      <view class="status-card {{summary.activeAlerts ? 'status-danger' : ''}}">
+        <view class="list-title">{{priorityAction.title}}</view>
+        <view class="list-body">{{priorityAction.descriptionText}}</view>
+        <button class="action-btn" data-url="{{priorityAction.url}}" bindtap="openPage" style="margin-top: 18rpx;">
+          {{priorityAction.actionTextLabel}}
+        </button>
       </view>
     </view>
-  </view>
+
+    <view class="panel">
+      <view class="section-head">
+        <view class="section-title-wrap">
+          <view class="section-kicker">今日安排</view>
+          <view class="panel-title">待完成任务</view>
+          <view class="panel-subtitle">把重要事情拆成几步完成，会更轻松也更有掌控感。</view>
+        </view>
+      </view>
+
+      <view class="card-list" style="margin-top: 18rpx;">
+        <view wx:for="{{todayTasks}}" wx:key="id" wx:for-item="task" class="task-card" data-url="{{task.url}}" bindtap="openPage">
+          <view class="task-top">
+            <view class="quick-top">
+              <view class="quick-icon">{{task.iconText}}</view>
+              <view class="tag tag-soft">{{task.statusText}}</view>
+            </view>
+          </view>
+          <view class="quick-title">{{task.title}}</view>
+          <view class="quick-desc">{{task.description}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="panel">
+      <view class="section-head">
+        <view class="section-title-wrap">
+          <view class="section-kicker">快捷入口</view>
+          <view class="panel-title">常用操作</view>
+        </view>
+      </view>
+
+      <view class="quick-grid" style="margin-top: 18rpx;">
+        <view class="quick-item" data-url="/pages/checkin/index" bindtap="openPage">
+          <view class="quick-top">
+            <view class="quick-icon">打</view>
+            <view class="score-chip">每日 1 次</view>
+          </view>
+          <view class="quick-title">健康打卡</view>
+          <view class="quick-desc">记录体温、饮食、运动、服药和情绪变化。</view>
+        </view>
+        <view class="quick-item" data-url="/pages/action-plan/index" bindtap="openPage">
+          <view class="quick-top">
+            <view class="quick-icon">策</view>
+            <view class="score-chip">随手更新</view>
+          </view>
+          <view class="quick-title">行动计划</view>
+          <view class="quick-desc">把应对步骤写成提醒，在难受时更容易执行。</view>
+        </view>
+        <view class="quick-item" data-url="/pages/records/index" bindtap="openPage">
+          <view class="quick-top">
+            <view class="quick-icon">档</view>
+            <view class="score-chip">整合查看</view>
+          </view>
+          <view class="quick-title">健康记录</view>
+          <view class="quick-desc">集中查看症状、咨询、学习和打卡轨迹。</view>
+        </view>
+        <view class="quick-item" data-url="/pages/reminders/index" bindtap="openPage">
+          <view class="quick-top">
+            <view class="quick-icon">提</view>
+            <view class="score-chip">避免遗漏</view>
+          </view>
+          <view class="quick-title">提醒设置</view>
+          <view class="quick-desc">管理服药、复查、自评和课程学习提醒。</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="panel">
+      <view class="section-head">
+        <view class="section-title-wrap">
+          <view class="section-kicker">阶段教育</view>
+          <view class="panel-title">适合你现在看的内容</view>
+          <view class="panel-subtitle">围绕当前治疗阶段精选图文、视频和音频课程。</view>
+        </view>
+      </view>
+
+      <scroll-view scroll-x class="horizontal-scroll" style="margin-top: 18rpx;">
+        <view wx:for="{{educationFeed}}" wx:key="id" wx:for-item="course" class="home-scroll-card">
+          <view class="tag-row">
+            <view class="tag">{{course.mediaTypeLabel}}</view>
+            <view class="tag tag-soft">{{course.stageLabel}}</view>
+          </view>
+          <view class="list-title">{{course.title}}</view>
+          <view class="list-body">{{course.summary}}</view>
+          <view class="meta-pair">
+            <text>{{course.durationLabel}}</text>
+            <text>{{course.isFavorite ? '已收藏' : '未收藏'}}</text>
+          </view>
+          <view class="list-actions">
+            <button class="ghost-btn" data-id="{{course.id}}" bindtap="toggleFavorite">{{course.favoriteLabel}}</button>
+            <button class="secondary-btn" data-id="{{course.id}}" bindtap="openDetail">查看详情</button>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="panel">
+      <view class="section-head">
+        <view class="section-title-wrap">
+          <view class="section-kicker">行动支持</view>
+          <view class="panel-title">可直接拿来用的建议</view>
+        </view>
+      </view>
+
+      <view class="card-list" style="margin-top: 18rpx;">
+        <view wx:for="{{actionPlanHighlights}}" wx:key="id" wx:for-item="plan" class="list-card">
+          <view class="tag-row">
+            <view class="tag">行动计划</view>
+            <view class="tag tag-soft">{{plan.reminderLabel}}</view>
+          </view>
+          <view class="list-title">{{plan.trigger}}</view>
+          <view class="list-body">{{plan.response}}</view>
+        </view>
+        <view wx:for="{{mindfulnessCourses}}" wx:key="id" wx:for-item="course" class="list-card">
+          <view class="tag-row">
+            <view class="tag tag-soft">放松课程</view>
+            <view class="tag">{{course.durationText}}</view>
+          </view>
+          <view class="list-title">{{course.title}}</view>
+          <view class="list-body">{{course.summary}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="panel">
+      <view class="section-head">
+        <view class="section-title-wrap">
+          <view class="section-kicker">提醒与互助</view>
+          <view class="panel-title">值得优先关注的信息</view>
+        </view>
+      </view>
+
+      <view class="card-list" style="margin-top: 18rpx;">
+        <view wx:for="{{alerts}}" wx:key="id" wx:for-item="alert" class="timeline-card">
+          <view class="tag-row">
+            <view class="tag tag-danger">{{alert.levelLabel}}</view>
+            <view class="tag tag-soft">{{alert.createdAtLabel}}</view>
+          </view>
+          <view class="timeline-title">{{alert.title}}</view>
+          <view class="timeline-body">{{alert.message}}</view>
+        </view>
+
+        <view wx:if="{{!alerts.length}}" class="empty-state">
+          <view class="empty-icon">稳</view>
+          <view class="empty-title">今天没有新的高优先提醒</view>
+          <view class="empty-desc">继续保持打卡和症状自评，系统会持续帮你观察变化。</view>
+        </view>
+
+        <view wx:for="{{recommendedPosts}}" wx:key="id" wx:for-item="post" class="list-card">
+          <view class="tag-row">
+            <view class="tag">广场推荐</view>
+            <view class="tag tag-soft">高互动经验</view>
+          </view>
+          <view class="list-title">{{post.title}}</view>
+          <view class="list-body">{{post.excerpt}}</view>
+          <button class="secondary-btn" data-url="/pages/plaza/index" bindtap="openPage" style="margin-top: 18rpx;">去广场看看</button>
+        </view>
+      </view>
+    </view>
+  </block>
 </view>

@@ -27,5 +27,10 @@ Page({
     } catch (error) {
       showError(error);
     }
+  },
+
+  openPage(event) {
+    const { url } = event.currentTarget.dataset;
+    wx.navigateTo({ url });
   }
 });

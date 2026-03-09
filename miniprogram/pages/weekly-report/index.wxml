@@ -1,6 +1,7 @@
 <view class="page-shell">
   <view class="hero-card" wx:if="{{report}}">
-    <view class="panel-title">每周复盘报告</view>
+    <view class="section-kicker">周复盘</view>
+    <view class="panel-title">这一周的自我管理摘要</view>
     <view class="panel-subtitle">{{report.rangeLabel}}</view>
     <view class="list-body">{{report.summary}}</view>
   </view>
@@ -16,7 +17,7 @@
     </view>
     <view class="stat-card">
       <view class="stat-value">{{report.metrics.completedReminders}}</view>
-      <view class="stat-label">已完成提醒</view>
+      <view class="stat-label">已启用提醒</view>
     </view>
     <view class="stat-card">
       <view class="stat-value">{{report.metrics.learningMinutes}}</view>
@@ -25,9 +26,10 @@
   </view>
 
   <view class="panel" wx:if="{{report && report.highlights}}">
-    <view class="panel-title">本周重点</view>
+    <view class="section-kicker">本周重点</view>
+    <view class="panel-title">值得继续关注的变化</view>
     <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{report.highlights}}" wx:key="id" class="timeline-card">
+      <view wx:for="{{report.highlights}}" wx:key="id" wx:for-item="item" class="timeline-card">
         <view class="timeline-title">{{item.title}}</view>
         <view class="timeline-body">{{item.body}}</view>
       </view>
@@ -35,9 +37,10 @@
   </view>
 
   <view class="panel" wx:if="{{report && report.nextActions}}">
-    <view class="panel-title">下周行动建议</view>
+    <view class="section-kicker">下周建议</view>
+    <view class="panel-title">继续保持的小目标</view>
     <view class="tag-row" style="margin-top: 18rpx;">
-      <view wx:for="{{report.nextActions}}" wx:key="index" class="tag">{{item}}</view>
+      <view wx:for="{{report.nextActions}}" wx:key="index" wx:for-item="item" class="tag">{{item}}</view>
     </view>
     <button class="secondary-btn" bindtap="exportReport" style="margin-top: 18rpx;">导出周复盘</button>
   </view>

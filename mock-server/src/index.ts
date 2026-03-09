@@ -4,6 +4,8 @@ import {
   type AppState,
   type CheckinRecord,
   type ConsultationThread,
+  type HomePriorityAction,
+  type HomeTask,
   type PlazaComment,
   type PlazaPost,
   type SymptomAssessmentInput,
@@ -97,6 +99,93 @@ function refreshModerationQueue() {
   }
 }
 
+function buildHomeTasks(): HomeTask[] {
+  const latestAssessment = state.symptomAssessments[0];
+  const activeReminderCount = state.reminders.filter((item) => item.enabled).length;
+  const hasUrgentAlert = state.diagnostics.alertEvents.some((item) => item.level === "urgent");
+
+  return [
+    {
+      id: "task-symptoms",
+      title: "完成今日症状自评",
+      description: latestAssessment ? "已记录最新一条症状数据，可随时补充说明。" : "建议在晚间统一完成一次自评。",
+      status: latestAssessment ? "done" : "todo",
+      iconKey: "symptom",
+      url: "/pages/symptoms/index"
+    },
+    {
+      id: "task-checkin",
+      title: "更新健康打卡",
+      description: state.checkins.length ? "最近一次打卡已生成，可继续补充饮食与情绪。" : "记录体温、血压、体重和运动情况。",
+      status: state.checkins.length ? "done" : "todo",
+      iconKey: "checkin",
+      url: "/pages/checkin/index"
+    },
+    {
+      id: "task-reminders",
+      title: "确认提醒是否合适",
+      description: activeReminderCount ? `当前已启用 ${activeReminderCount} 项提醒。` : "建议至少开启服药和自评提醒。",
+      status: activeReminderCount ? "done" : "todo",
+      iconKey: "reminder",
+      url: "/pages/reminders/index"
+    },
+    {
+      id: "task-help",
+      title: "查看紧急联络方式",
+      description: hasUrgentAlert ? "检测到高优先级预警，建议先确认热线和求助路径。" : "提前熟悉热线与求助入口，突发情况更从容。",
+      status: hasUrgentAlert ? "attention" : "todo",
+      iconKey: "help",
+      url: "/pages/help/index"
+    }
+  ];
+}
+
+function buildPriorityAction(): HomePriorityAction {
+  const latestAssessment = state.symptomAssessments[0];
+
+  if (!latestAssessment) {
+    return {
+      title: "先建立今天的健康记录",
+      body: "完成一次症状自评和健康打卡，首页推荐和提醒会更贴近当前状态。",
+      level: "stable",
+      iconKey: "checkin",
+      ctaLabel: "开始记录",
+      url: "/pages/checkin/index"
+    };
+  }
+
+  if (latestAssessment.riskLevel === "urgent") {
+    return {
+      title: "优先处理高风险症状",
+      body: "当前症状已达到高优先级阈值，建议先查看护理建议，并尽快联系医护团队。",
+      level: "urgent",
+      iconKey: "alert",
+      ctaLabel: "查看症状建议",
+      url: "/pages/symptoms/index"
+    };
+  }
+
+  if (latestAssessment.riskLevel === "attention") {
+    return {
+      title: "今晚适合做一次重点复盘",
+      body: "建议结合最新症状记录，补全行动计划或发起咨询，把风险控制在可管理范围内。",
+      level: "attention",
+      iconKey: "action",
+      ctaLabel: "完善行动计划",
+      url: "/pages/action-plan/index"
+    };
+  }
+
+  return {
+    title: "继续保持当前节奏",
+    body: "今天整体状态处于可管理范围，适合完成学习内容并确认明天的提醒安排。",
+    level: "stable",
+    iconKey: "education",
+    ctaLabel: "继续学习",
+    url: "/pages/home/index"
+  };
+}
+
 function buildHomePayload() {
   refreshModerationQueue();
   const latestAssessment = state.symptomAssessments[0];
@@ -143,6 +232,8 @@ function buildHomePayload() {
       ...item,
       durationLabel: `${item.durationMinutes} 分钟`
     })),
+    todayTasks: buildHomeTasks(),
+    priorityAction: buildPriorityAction(),
     recommendedPosts,
     alerts: state.diagnostics.alertEvents.slice(0, 3).map((item) => ({
       ...item,
@@ -700,7 +791,14 @@ app.get("/api/help/content", (_req, res) => {
         body: "按“症状是什么、持续多久、做过哪些处理、结果如何”四段式描述，更便于快速得到指导。"
       }
     ],
-    hotline: "医院妇科肿瘤专科热线：021-5555-1200"
+    hotline: "医院妇科肿瘤专科热线：021-5555-1200",
+    hotlineLabel: "妇科肿瘤专科热线",
+    hotlineNumber: "021-5555-1200",
+    emergencySteps: [
+      "先记录最明显的不适症状、持续时间和当前处理情况。",
+      "若疼痛明显加重、腹泻频繁或伴随发热，请优先联系专科热线。",
+      "如出现持续恶化或无法等待回复的情况，请立即前往医院或联系紧急联系人。"
+    ]
   });
 });
 

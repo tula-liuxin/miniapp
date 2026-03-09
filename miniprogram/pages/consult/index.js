@@ -10,7 +10,10 @@ Page({
     templates: [],
     threads: [],
     proactiveGuidance: [],
-    includeSampleImage: false
+    includeSampleImage: false,
+    expandedFaqId: "",
+    selectedTemplateId: "",
+    submitting: false
   },
 
   onShow() {
@@ -23,6 +26,11 @@ Page({
 
   toggleSampleImage() {
     this.setData({ includeSampleImage: !this.data.includeSampleImage });
+  },
+
+  toggleFaq(event) {
+    const { id } = event.currentTarget.dataset;
+    this.setData({ expandedFaqId: this.data.expandedFaqId === id ? "" : id });
   },
 
   async loadData() {
@@ -44,16 +52,22 @@ Page({
   },
 
   applyTemplate(event) {
-    const { content } = event.currentTarget.dataset;
-    this.setData({ "form.content": content });
+    const { content, id } = event.currentTarget.dataset;
+    this.setData({
+      "form.content": content,
+      selectedTemplateId: id
+    });
   },
 
   async submitConsultation() {
-    if (!this.data.form.content.trim()) {
-      wx.showToast({ title: "请先输入咨询内容", icon: "none" });
+    if (!this.data.form.content.trim() || this.data.submitting) {
+      if (!this.data.form.content.trim()) {
+        wx.showToast({ title: "请先输入咨询内容", icon: "none" });
+      }
       return;
     }
     try {
+      this.setData({ submitting: true });
       await request({
         url: "/consultations",
         method: "POST",
@@ -65,10 +79,13 @@ Page({
       wx.showToast({ title: "咨询已发出", icon: "success" });
       this.setData({
         form: { content: "" },
-        includeSampleImage: false
+        includeSampleImage: false,
+        selectedTemplateId: "",
+        submitting: false
       });
       this.loadData();
     } catch (error) {
+      this.setData({ submitting: false });
       showError(error);
     }
   }

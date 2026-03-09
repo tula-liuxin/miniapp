@@ -1,3 +1,47 @@
-.panel .field-group:first-child {
+.faq-card {
+  padding: 22rpx;
+  border-radius: 26rpx;
+  background: rgba(255, 251, 247, 0.94);
+  border: 1rpx solid rgba(188, 144, 108, 0.18);
+}
+
+.faq-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.faq-title {
+  margin-top: 0;
+}
+
+.faq-toggle {
+  color: #9a623f;
+  font-size: 22rpx;
+  flex: 0 0 auto;
+}
+
+.faq-body {
+  padding-top: 16rpx;
+}
+
+.bubble {
   margin-top: 18rpx;
+  padding: 20rpx;
+  border-radius: 24rpx;
+}
+
+.bubble-mine {
+  background: rgba(255, 245, 236, 0.9);
+}
+
+.bubble-reply {
+  background: rgba(239, 247, 243, 0.94);
+}
+
+.bubble-title {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #554236;
 }

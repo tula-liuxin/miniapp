@@ -1,27 +1,43 @@
 <view class="page-shell">
   <view class="hero-card">
-    <view class="panel-title">使用说明与反馈</view>
-    <view class="panel-subtitle">帮助患者快速理解模块用途、操作方式和应急路径。</view>
+    <view class="section-kicker">帮助与反馈</view>
+    <view class="panel-title">使用说明、热线和反馈入口都在这里</view>
+    <view class="panel-subtitle">帮助你更快理解各模块用途、操作方式，以及出现不适时应该如何求助。</view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">使用指南</view>
+    <view class="section-kicker">使用指南</view>
+    <view class="panel-title">先从这些步骤开始</view>
     <view class="card-list" style="margin-top: 18rpx;">
-      <view wx:for="{{guideSections}}" wx:key="id" class="timeline-card">
-        <view class="timeline-title">{{item.title}}</view>
-        <view class="timeline-body">{{item.body}}</view>
+      <view wx:for="{{guideSections}}" wx:key="id" wx:for-item="guide" class="timeline-card">
+        <view class="timeline-title">{{guide.title}}</view>
+        <view class="timeline-body">{{guide.body}}</view>
       </view>
     </view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">专科热线</view>
-    <view class="list-body">{{hotline}}</view>
+    <view class="section-kicker">专科热线</view>
+    <view class="panel-title">{{hotlineLabel}}</view>
+    <view class="list-body">{{hotlineDisplayText}}</view>
+    <button class="secondary-btn" bindtap="callHotline" style="margin-top: 18rpx;">拨打热线</button>
+  </view>
+
+  <view class="panel" wx:if="{{emergencySteps.length}}">
+    <view class="section-kicker">紧急处理</view>
+    <view class="panel-title">遇到突发不适时的建议顺序</view>
+    <view class="card-list" style="margin-top: 18rpx;">
+      <view wx:for="{{emergencySteps}}" wx:key="index" wx:for-item="step" class="timeline-card">
+        <view class="timeline-title">第 {{index + 1}} 步</view>
+        <view class="timeline-body">{{step}}</view>
+      </view>
+    </view>
   </view>
 
   <view class="panel">
-    <view class="panel-title">意见反馈</view>
-    <textarea class="textarea" auto-height="true" placeholder="告诉我们你希望优化或新增的功能" value="{{feedback}}" bindinput="onFeedbackChange"></textarea>
+    <view class="section-kicker">意见反馈</view>
+    <view class="panel-title">告诉我们哪里还可以更顺手</view>
+    <textarea class="textarea" auto-height="true" placeholder="你希望优化什么？或者哪个操作让你觉得不够顺手？" value="{{feedback}}" bindinput="onFeedbackChange"></textarea>
     <button class="action-btn" bindtap="submitFeedback" style="margin-top: 18rpx;">提交反馈</button>
   </view>
 </view>

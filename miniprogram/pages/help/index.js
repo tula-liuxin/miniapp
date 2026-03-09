@@ -4,6 +4,10 @@ Page({
   data: {
     guideSections: [],
     hotline: "",
+    hotlineLabel: "专科热线",
+    hotlineNumber: "",
+    hotlineDisplayText: "",
+    emergencySteps: [],
     feedback: ""
   },
 
@@ -20,11 +24,27 @@ Page({
       const payload = await request({ url: "/help/content" });
       this.setData({
         guideSections: payload.guideSections || [],
-        hotline: payload.hotline || ""
+        hotline: payload.hotline || "",
+        hotlineLabel: payload.hotlineLabel || "专科热线",
+        hotlineNumber: payload.hotlineNumber || "",
+        hotlineDisplayText: payload.hotline || payload.hotlineNumber || "",
+        emergencySteps: payload.emergencySteps || []
       });
     } catch (error) {
       showError(error);
     }
+  },
+
+  callHotline() {
+    if (!this.data.hotlineNumber) {
+      wx.showToast({ title: "暂未配置热线号码", icon: "none" });
+      return;
+    }
+
+    wx.makePhoneCall({
+      phoneNumber: this.data.hotlineNumber,
+      fail: () => wx.showToast({ title: "当前环境无法直接拨号", icon: "none" })
+    });
   },
 
   async submitFeedback() {

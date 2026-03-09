@@ -134,6 +134,24 @@ export interface ReminderSetting {
   time: string;
 }
 
+export interface HomeTask {
+  id: string;
+  title: string;
+  description: string;
+  status: "todo" | "done" | "attention";
+  iconKey: string;
+  url: string;
+}
+
+export interface HomePriorityAction {
+  title: string;
+  body: string;
+  level: "stable" | "attention" | "urgent";
+  iconKey: string;
+  ctaLabel: string;
+  url: string;
+}
+
 export interface DiagnosticEvent {
   id: string;
   type: "alert" | "reminder" | "export" | "emergency" | "moderation" | "feedback" | "consultation";

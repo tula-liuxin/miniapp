@@ -1,7 +1,8 @@
-<view class="page-shell" id="page-post-editor">
+<view class="page-shell with-sticky-cta" id="page-post-editor">
   <view class="hero-card">
-    <view class="panel-title">{{postId ? '编辑经验分享' : '发布经验分享'}}</view>
-    <view class="panel-subtitle">内容会进入审核流，系统会过滤违规或不实信息。</view>
+    <view class="section-kicker">{{postId ? '编辑内容' : '发布分享'}}</view>
+    <view class="panel-title">{{postId ? '把这条经验补充得更清楚' : '发布一条对别人有帮助的经验'}}</view>
+    <view class="panel-subtitle">内容会进入审核流程，系统会过滤违规或不实信息，请尽量写出真实、具体、可参考的经历。</view>
   </view>
 
   <view class="panel">
@@ -11,13 +12,21 @@
     </view>
     <view class="field-group">
       <text class="field-label">正文</text>
-      <textarea id="input-post-content" class="textarea" auto-height="true" value="{{form.content}}" data-key="content" bindinput="onFieldChange"></textarea>
+      <textarea id="input-post-content" class="textarea" auto-height="true" value="{{form.content}}" data-key="content" bindinput="onFieldChange" placeholder="可以写下你遇到的问题、怎么处理、最后有什么效果，以及想提醒别人的地方。"></textarea>
+      <view class="field-meta">
+        <text>{{form.content.length}} 字</text>
+        <text>越具体越有参考价值</text>
+      </view>
     </view>
     <view class="field-group">
       <text class="field-label">标签</text>
       <input class="input" value="{{form.tags}}" data-key="tags" bindinput="onFieldChange" />
-      <view class="field-hint">用英文逗号分隔，例如：化疗,饮食,疲乏管理</view>
+      <view class="field-hint">用英文逗号分隔，例如：放疗,饮食,疲乏管理</view>
     </view>
+  </view>
+
+  <view class="sticky-cta">
+    <view class="sticky-hint">提交后会进入审核，通过后即可在广场展示。</view>
     <button id="button-submit-post" class="action-btn" bindtap="savePost">提交审核</button>
   </view>
 </view>

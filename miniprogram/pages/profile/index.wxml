@@ -1,41 +1,69 @@
 <view class="page-shell" id="page-profile">
   <view wx:if="{{profile}}" class="hero-card">
+    <view class="section-kicker">我的档案</view>
     <view class="panel-title">{{profile.name}}</view>
     <view class="panel-subtitle">{{profile.diagnosis}} · {{profile.treatmentStageLabel}}</view>
     <view class="list-body">{{profile.treatmentPlan}}</view>
+
+    <view class="hero-meta">
+      <view class="tag">复查计划已同步</view>
+      <view class="tag tag-soft">责任团队在跟进</view>
+    </view>
   </view>
 
-  <view wx:if="{{summary}}" class="grid-two">
+  <view wx:if="{{summary}}" class="grid-two profile-stat-grid">
     <view class="stat-card">
+      <view class="stat-eyebrow">记录总览</view>
       <view class="stat-value">{{summary.metrics.symptomCount}}</view>
       <view class="stat-label">症状评估</view>
     </view>
     <view class="stat-card">
+      <view class="stat-eyebrow">连续管理</view>
       <view class="stat-value">{{summary.metrics.checkinCount}}</view>
       <view class="stat-label">打卡记录</view>
     </view>
     <view class="stat-card">
+      <view class="stat-eyebrow">沟通支持</view>
       <view class="stat-value">{{summary.metrics.consultationCount}}</view>
       <view class="stat-label">咨询记录</view>
     </view>
     <view class="stat-card">
+      <view class="stat-eyebrow">学习积累</view>
       <view class="stat-value">{{summary.metrics.favoriteCount}}</view>
-      <view class="stat-label">学习收藏</view>
+      <view class="stat-label">已收藏内容</view>
     </view>
   </view>
 
   <view wx:if="{{profile}}" class="panel">
-    <view class="panel-title">个人档案</view>
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">照护信息</view>
+        <view class="panel-title">关键资料</view>
+      </view>
+    </view>
+
     <view class="card-list" style="margin-top: 18rpx;">
       <view class="timeline-card">
+        <view class="quick-top">
+          <view class="quick-icon">复</view>
+          <view class="tag tag-soft">按计划复查</view>
+        </view>
         <view class="timeline-title">复查计划</view>
         <view class="timeline-body">{{profile.followUpPlan}}</view>
       </view>
       <view class="timeline-card">
+        <view class="quick-top">
+          <view class="quick-icon">医</view>
+          <view class="tag tag-soft">责任团队</view>
+        </view>
         <view class="timeline-title">负责团队</view>
         <view class="timeline-body">{{profile.careTeam}}</view>
       </view>
       <view class="timeline-card">
+        <view class="quick-top">
+          <view class="quick-icon">联</view>
+          <view class="tag tag-warning">紧急联系</view>
+        </view>
         <view class="timeline-title">紧急联系人</view>
         <view class="timeline-body">{{profile.emergencyContact}}</view>
       </view>
@@ -43,25 +71,70 @@
   </view>
 
   <view class="panel">
-    <view class="panel-title">快捷入口</view>
-    <view class="quick-grid" style="margin-top: 18rpx;">
-      <view class="quick-item" bindtap="openPage" data-url="/pages/records/index">
-        <view class="quick-title">健康档案</view>
-        <view class="quick-desc">查看症状、打卡、咨询和学习轨迹。</view>
-      </view>
-      <view class="quick-item" bindtap="openPage" data-url="/pages/reminders/index">
-        <view class="quick-title">提醒设置</view>
-        <view class="quick-desc">管理服药、复查、自评和课程提醒。</view>
-      </view>
-      <view class="quick-item" bindtap="openPage" data-url="/pages/help/index">
-        <view class="quick-title">使用说明</view>
-        <view class="quick-desc">查看教程、反馈入口和热线说明。</view>
-      </view>
-      <view id="button-export-records" class="quick-item" bindtap="exportRecords">
-        <view class="quick-title">导出记录</view>
-        <view class="quick-desc">生成健康档案导出任务。</view>
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">重点入口</view>
+        <view class="panel-title">常用管理功能</view>
       </view>
     </view>
-    <button id="button-emergency-help" class="danger-btn" bindtap="triggerEmergency" style="margin-top: 18rpx;">一键紧急求助</button>
+
+    <view class="quick-grid" style="margin-top: 18rpx;">
+      <view class="quick-item" bindtap="openPage" data-url="/pages/records/index">
+        <view class="quick-top">
+          <view class="quick-icon">档</view>
+          <view class="tag tag-soft">汇总查看</view>
+        </view>
+        <view class="quick-title">健康档案</view>
+        <view class="quick-desc">查看症状、打卡、咨询和学习记录的整合摘要。</view>
+      </view>
+      <view class="quick-item" bindtap="openPage" data-url="/pages/reminders/index">
+        <view class="quick-top">
+          <view class="quick-icon">提</view>
+          <view class="tag tag-soft">避免遗漏</view>
+        </view>
+        <view class="quick-title">提醒设置</view>
+        <view class="quick-desc">管理服药、复查、自评和课程提醒时间。</view>
+      </view>
+      <view class="quick-item" bindtap="openPage" data-url="/pages/help/index">
+        <view class="quick-top">
+          <view class="quick-icon">助</view>
+          <view class="tag tag-soft">使用说明</view>
+        </view>
+        <view class="quick-title">帮助与反馈</view>
+        <view class="quick-desc">查看操作指南、热线信息和意见反馈入口。</view>
+      </view>
+      <view id="button-export-records" class="quick-item" bindtap="exportRecords">
+        <view class="quick-top">
+          <view class="quick-icon">导</view>
+          <view class="tag tag-soft">生成任务</view>
+        </view>
+        <view class="quick-title">导出记录</view>
+        <view class="quick-desc">生成健康档案导出任务，便于随访或留存。</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="section-head">
+      <view class="section-title-wrap">
+        <view class="section-kicker">紧急支持</view>
+        <view class="panel-title">需要时可快速求助</view>
+      </view>
+    </view>
+
+    <view class="status-card status-danger" style="margin-top: 18rpx;">
+      <view class="list-title">{{hotlineLabel}}</view>
+      <view class="list-body">{{hotlineDisplayText}}</view>
+      <view class="card-list" style="margin-top: 18rpx;" wx:if="{{emergencySteps.length}}">
+        <view wx:for="{{emergencySteps}}" wx:key="index" wx:for-item="step" class="timeline-card profile-step-card">
+          <view class="timeline-title">第 {{index + 1}} 步</view>
+          <view class="timeline-body">{{step}}</view>
+        </view>
+      </view>
+      <view class="list-actions">
+        <button class="secondary-btn" bindtap="callHotline">拨打热线</button>
+        <button id="button-emergency-help" class="danger-btn" bindtap="triggerEmergency">一键紧急求助</button>
+      </view>
+    </view>
   </view>
 </view>

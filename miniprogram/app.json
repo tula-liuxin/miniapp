@@ -16,36 +16,46 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fcfaf5",
+    "navigationBarBackgroundColor": "#fdf7f0",
     "navigationBarTitleText": "宫颈癌患者关护",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f3eee4"
+    "backgroundColor": "#f7efe3"
   },
   "tabBar": {
-    "color": "#6e6454",
-    "selectedColor": "#b4552d",
-    "backgroundColor": "#fcfaf5",
-    "borderStyle": "black",
+    "color": "#7f6c59",
+    "selectedColor": "#bf5d32",
+    "backgroundColor": "#fff8f1",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "assets/icon-home.png",
+        "selectedIconPath": "assets/icon-home-active.png"
       },
       {
         "pagePath": "pages/symptoms/index",
-        "text": "症状"
+        "text": "症状",
+        "iconPath": "assets/icon-symptom.png",
+        "selectedIconPath": "assets/icon-symptom-active.png"
       },
       {
         "pagePath": "pages/consult/index",
-        "text": "互动"
+        "text": "咨询",
+        "iconPath": "assets/icon-chat.png",
+        "selectedIconPath": "assets/icon-chat-active.png"
       },
       {
         "pagePath": "pages/plaza/index",
-        "text": "广场"
+        "text": "广场",
+        "iconPath": "assets/icon-plaza.png",
+        "selectedIconPath": "assets/icon-plaza-active.png"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/icon-profile.png",
+        "selectedIconPath": "assets/icon-profile-active.png"
       }
     ]
   },
